@@ -1,7 +1,10 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
-const partsAdapter = createEntityAdapter({});
+const partsAdapter = createEntityAdapter({
+  sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+});
+
 const initialState = partsAdapter.getInitialState();
 
 const partsApiSlice = apiSlice.injectEndpoints({
@@ -22,7 +25,8 @@ const partsApiSlice = apiSlice.injectEndpoints({
 
 export const { useGetPartsQuery } = partsApiSlice;
 
-// Define function to get selectors based on arguments (query) of getSetups
+// ! https://stackoverflow.com/questions/72524054/how-to-getselectors-through-passing-arg-in-endpoint-select-in-redux-rtk
+
 export const getPartsSelectors = (query) => {
   // returns the query result object
   const selectPartsResult = partsApiSlice.endpoints.getParts.select(query);
@@ -33,9 +37,8 @@ export const getPartsSelectors = (query) => {
     (partsResult) => partsResult.data // normalized state object with ids & entities
   );
 
+  // returns selectors
   return partsAdapter.getSelectors(
     (state) => selectPartsData(state) ?? initialState
   );
 };
-
-// https://stackoverflow.com/questions/72524054/how-to-getselectors-through-passing-arg-in-endpoint-select-in-redux-rtk
