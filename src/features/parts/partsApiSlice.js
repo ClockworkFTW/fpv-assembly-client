@@ -10,7 +10,10 @@ const initialState = partsAdapter.getInitialState();
 const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getParts: builder.query({
-      query: (type) => `/parts?type=${type}`,
+      query: (type) => ({
+        url: `/parts?type=${type}`,
+        method: "GET",
+      }),
       transformResponse: ({ parts }) => {
         return partsAdapter.setAll(initialState, parts);
       },
@@ -20,10 +23,38 @@ const partsApiSlice = apiSlice.injectEndpoints({
       },
       keepUnusedDataFor: 10,
     }),
+    createPart: builder.mutation({
+      query: (part) => ({
+        url: `/parts`,
+        method: "POST",
+        body: part,
+      }),
+      invalidatesTags: [{ type: "Part", id: "LIST" }],
+    }),
+    updatePart: builder.mutation({
+      query: (part) => ({
+        url: `/parts/${part.partId}`,
+        method: "PATCH",
+        body: part,
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "Part", id: arg.id }],
+    }),
+    deletePart: builder.mutation({
+      query: (partId) => ({
+        url: `/parts/${partId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "Part", id: arg.id }],
+    }),
   }),
 });
 
-export const { useGetPartsQuery } = partsApiSlice;
+export const {
+  useGetPartsQuery,
+  useCreatePartMutation,
+  useUpdatePartMutation,
+  useDeletePartMutation,
+} = partsApiSlice;
 
 // ! https://stackoverflow.com/questions/72524054/how-to-getselectors-through-passing-arg-in-endpoint-select-in-redux-rtk
 

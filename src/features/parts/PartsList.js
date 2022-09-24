@@ -1,19 +1,13 @@
-import pluralize from "pluralize";
 import { useParams } from "react-router-dom";
 import { useGetPartsQuery } from "./partsApiSlice";
 
-import Part from "./Part";
+import { partTypeToName } from "../../util";
 
-const partTypeToName = (partType) => {
-  let words = partType.split("-");
-  words = words.map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
-  words[words.length - 1] = pluralize(words[words.length - 1]);
-  return words.join(" ");
-};
+import Part from "./Part";
 
 const PartsList = () => {
   const { partType } = useParams();
-  const partName = partTypeToName(partType);
+  const partName = partTypeToName(partType, true);
 
   const {
     data: parts,
