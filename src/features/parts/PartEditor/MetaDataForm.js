@@ -26,13 +26,6 @@ const MetaDataForm = () => (
   </>
 );
 
-export const metaDataInitialValues = {
-  name: "",
-  manufacturer: "",
-  image: "",
-  weight: 0,
-};
-
 export const metaDataValidationSchema = Yup.object({
   metaData: Yup.object({
     name: Yup.string()

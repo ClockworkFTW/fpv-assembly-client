@@ -1,19 +1,32 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import MetaDataForm, {
-  metaDataInitialValues,
-  metaDataValidationSchema,
-} from "./MetaDataForm";
+import MetaDataForm, { metaDataValidationSchema } from "./MetaDataForm";
 
-const RadioReceiverForm = ({ partType, handleOnSubmit }) => {
+const RadioReceiverForm = ({ part, partType, handleOnSubmit }) => {
   const initialValues = {
-    metaData: { ...metaDataInitialValues, type: partType },
-    specData: {},
+    metaData: {
+      type: partType,
+      name: part?.name ?? "",
+      manufacturer: part?.manufacturer ?? "",
+      image: part?.image ?? "",
+      weight: part?.weight ?? 0,
+    },
+    specData: {
+      txProtocol: part?.txProtocol ?? "",
+      rxProtocol: part?.rxProtocol ?? "",
+    },
   };
 
   const validationSchema = metaDataValidationSchema.shape({
-    specData: Yup.object({}),
+    specData: Yup.object({
+      txProtocol: Yup.string()
+        .max(25, "Must be 25 characters or less")
+        .required("Required"),
+      rxProtocol: Yup.string()
+        .max(25, "Must be 25 characters or less")
+        .required("Required"),
+    }),
   });
 
   return (
@@ -24,9 +37,16 @@ const RadioReceiverForm = ({ partType, handleOnSubmit }) => {
     >
       <Form>
         <MetaDataForm />
-        {
-          // Insert form elements here
-        }
+        <div>
+          <label htmlFor="specData.txProtocol">Tx Protocol</label>
+          <Field name="specData.txProtocol" type="text" />
+          <ErrorMessage name="specData.txProtocol" />
+        </div>
+        <div>
+          <label htmlFor="specData.rxProtocol">Rx Protocol</label>
+          <Field name="specData.rxProtocol" type="text" />
+          <ErrorMessage name="specData.rxProtocol" />
+        </div>
         <button type="submit">Submit</button>
       </Form>
     </Formik>

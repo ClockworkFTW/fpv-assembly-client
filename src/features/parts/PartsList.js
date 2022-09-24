@@ -15,7 +15,7 @@ const PartsList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetPartsQuery(partType);
+  } = useGetPartsQuery();
 
   let content = null;
 

@@ -1,7 +1,16 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { partTypes } from "../../../config";
 import { partTypeToName } from "../../../util";
+
+import {
+  selectPartById,
+  useCreatePartMutation,
+  useUpdatePartMutation,
+  useDeletePartMutation,
+} from "../partsApiSlice";
 
 import MotorForm from "./MotorForm";
 import FrameForm from "./FrameForm";
@@ -15,79 +24,40 @@ import FlightControllerForm from "./FlightControllerForm";
 import ElectronicSpeedControllerForm from "./ElectronicSpeedControllerForm";
 
 const PartEditor = () => {
-  const [partType, setPartType] = useState(partTypes.motor);
+  const { partId } = useParams();
+  const part = useSelector((state) => selectPartById(state, partId));
 
-  const handleOnSubmit = (values) => {
-    console.log(values);
-  };
+  const [partType, setPartType] = useState(part ? part.type : partTypes.motor);
 
-  const renderForm = (partType) => {
-    switch (partType) {
-      case partTypes.motor:
-        return (
-          <MotorForm partType={partType} handleOnSubmit={handleOnSubmit} />
-        );
-      case partTypes.frame:
-        return (
-          <FrameForm partType={partType} handleOnSubmit={handleOnSubmit} />
-        );
-      case partTypes.battery:
-        return (
-          <BatteryForm partType={partType} handleOnSubmit={handleOnSubmit} />
-        );
-      case partTypes.propeller:
-        return (
-          <PropellerForm partType={partType} handleOnSubmit={handleOnSubmit} />
-        );
-      case partTypes.radioReceiver:
-        return (
-          <RadioReceiverForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      case partTypes.videoCamera:
-        return (
-          <VideoCameraForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      case partTypes.videoAntenna:
-        return (
-          <VideoAntennaForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      case partTypes.videoTransmitter:
-        return (
-          <VideoTransmitterForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      case partTypes.flightController:
-        return (
-          <FlightControllerForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      case partTypes.electronicSpeedController:
-        return (
-          <ElectronicSpeedControllerForm
-            partType={partType}
-            handleOnSubmit={handleOnSubmit}
-          />
-        );
-      default:
-        break;
+  const [
+    createPart,
+    { isCreateLoading, isCreateSuccess, isCreateError, createError },
+  ] = useCreatePartMutation();
+
+  const [
+    updatePart,
+    { isUpdateLoading, isUpdateSuccess, isUpdateError, updateError },
+  ] = useUpdatePartMutation();
+
+  const [
+    deletePart,
+    { isDeleteLoading, isDeleteSuccess, isDeleteError, deleteError },
+  ] = useDeletePartMutation();
+
+  const handleOnSubmit = (part) => {
+    if (partId === "new") {
+      createPart(part);
+    } else {
+      updatePart(part);
     }
   };
 
-  return (
-    <div>
+  const handleOnDelete = (partId) => {
+    deletePart(partId);
+  };
+
+  const renderSelect = () =>
+    part ? null : (
       <div>
         <label>Type</label>
         <select value={partType} onChange={(e) => setPartType(e.target.value)}>
@@ -98,7 +68,110 @@ const PartEditor = () => {
           ))}
         </select>
       </div>
-      {renderForm(partType)}
+    );
+
+  const renderForm = () => {
+    switch (partType) {
+      case partTypes.motor:
+        return (
+          <MotorForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.frame:
+        return (
+          <FrameForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.battery:
+        return (
+          <BatteryForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.propeller:
+        return (
+          <PropellerForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.radioReceiver:
+        return (
+          <RadioReceiverForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.videoCamera:
+        return (
+          <VideoCameraForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.videoAntenna:
+        return (
+          <VideoAntennaForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.videoTransmitter:
+        return (
+          <VideoTransmitterForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.flightController:
+        return (
+          <FlightControllerForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      case partTypes.electronicSpeedController:
+        return (
+          <ElectronicSpeedControllerForm
+            part={part}
+            partType={partType}
+            handleOnSubmit={handleOnSubmit}
+            handleOnDelete={handleOnDelete}
+          />
+        );
+      default:
+        break;
+    }
+  };
+
+  return (
+    <div>
+      <h1>Part Editor</h1>
+      {renderSelect()}
+      {renderForm()}
     </div>
   );
 };

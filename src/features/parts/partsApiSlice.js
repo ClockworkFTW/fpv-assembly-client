@@ -10,8 +10,8 @@ const initialState = partsAdapter.getInitialState();
 const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getParts: builder.query({
-      query: (type) => ({
-        url: `/parts?type=${type}`,
+      query: () => ({
+        url: `/parts`,
         method: "GET",
       }),
       transformResponse: ({ parts }) => {
@@ -21,7 +21,6 @@ const partsApiSlice = apiSlice.injectEndpoints({
         const tags = result.ids.map((id) => ({ type: "Part", id }));
         return [{ type: "Part", id: "LIST" }, ...tags];
       },
-      keepUnusedDataFor: 10,
     }),
     createPart: builder.mutation({
       query: (part) => ({
@@ -56,20 +55,21 @@ export const {
   useDeletePartMutation,
 } = partsApiSlice;
 
-// ! https://stackoverflow.com/questions/72524054/how-to-getselectors-through-passing-arg-in-endpoint-select-in-redux-rtk
+// returns the query result object
+export const selectPartsResult = partsApiSlice.endpoints.getParts.select();
 
-export const getPartsSelectors = (query) => {
-  // returns the query result object
-  const selectPartsResult = partsApiSlice.endpoints.getParts.select(query);
+// creates memoized selector
+const selectPartsData = createSelector(
+  selectPartsResult,
+  (partsResult) => partsResult.data // normalized state object with ids & entities
+);
 
-  // creates memoized selector
-  const selectPartsData = createSelector(
-    selectPartsResult,
-    (partsResult) => partsResult.data // normalized state object with ids & entities
-  );
-
-  // returns selectors
-  return partsAdapter.getSelectors(
-    (state) => selectPartsData(state) ?? initialState
-  );
-};
+// getSelectors creates these selectors and we rename them with aliases using destructuring
+export const {
+  selectAll: selectAllParts,
+  selectById: selectPartById,
+  selectIds: selectPartIds,
+  // Pass in a selector that returns the parts slice of state
+} = partsAdapter.getSelectors(
+  (state) => selectPartsData(state) ?? initialState
+);

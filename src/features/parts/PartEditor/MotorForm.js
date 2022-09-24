@@ -1,21 +1,24 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import MetaDataForm, {
-  metaDataInitialValues,
-  metaDataValidationSchema,
-} from "./MetaDataForm";
+import MetaDataForm, { metaDataValidationSchema } from "./MetaDataForm";
 
-const MotorForm = ({ partType, handleOnSubmit }) => {
+const MotorForm = ({ part, partType, handleOnSubmit }) => {
   const initialValues = {
-    metaData: { ...metaDataInitialValues, type: partType },
+    metaData: {
+      type: partType,
+      name: part?.name ?? "",
+      manufacturer: part?.manufacturer ?? "",
+      image: part?.image ?? "",
+      weight: part?.weight ?? 0,
+    },
     specData: {
-      kv: 0,
-      motorDiameter: 0,
-      motorHeight: 0,
-      shaftDiameter: 0,
-      motorMountWidth: 0,
-      motorMountLength: 0,
+      kv: part?.kv ?? 0,
+      motorDiameter: part?.motorDiameter ?? 0,
+      motorHeight: part?.motorHeight ?? 0,
+      shaftDiameter: part?.shaftDiameter ?? 0,
+      motorMountWidth: part?.motorMountWidth ?? 0,
+      motorMountLength: part?.motorMountLength ?? 0,
     },
   };
 

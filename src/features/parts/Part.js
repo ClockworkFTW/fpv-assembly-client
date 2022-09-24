@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getPartsSelectors } from "./partsApiSlice";
+
+import { selectPartById } from "./partsApiSlice";
 
 const Part = ({ partId, partType }) => {
-  const { selectById } = getPartsSelectors(partType);
-  const part = useSelector((state) => selectById(state, partId));
+  const navigate = useNavigate();
 
-  return (
+  const part = useSelector((state) => selectPartById(state, partId));
+
+  return part.type === partType ? (
     <div>
       <p>{part.name}</p>
+      <button onClick={() => navigate(`/parts/edit/${partId}`)}>edit</button>
     </div>
-  );
+  ) : null;
 };
 
 export default Part;

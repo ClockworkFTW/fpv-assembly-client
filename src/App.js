@@ -18,8 +18,7 @@ const App = () => {
         <Route path="parts">
           <Route index element={<PartsMenu />} />
           <Route path=":partType" element={<PartsList />} />
-          <Route path=":partId" element={<PartEditor />} />
-          <Route path="new" element={<PartEditor />} />
+          <Route path="edit/:partId" element={<PartEditor />} />
         </Route>
       </Route>
     </Routes>

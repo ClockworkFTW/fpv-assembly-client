@@ -6,6 +6,7 @@ import { partTypeToName } from "../../util";
 const PartsMenu = () => (
   <div>
     <h1>Parts</h1>
+    <Link to="/parts/edit/new">Create Part</Link>
     <ul>
       {Object.entries(partTypes).map(([key, value]) => (
         <li key={key} value={value}>
