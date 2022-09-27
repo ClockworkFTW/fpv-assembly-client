@@ -33,20 +33,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    refreshAccessToken: builder.mutation({
-      query: () => ({
-        url: "/auth/refresh-access-token",
-        method: "GET",
-      }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const result = await queryFulfilled;
-          dispatch(setCredentials(result.data.token));
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    }),
     signOut: builder.mutation({
       query: () => ({
         url: "/auth/sign-out",
@@ -57,6 +43,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
           await queryFulfilled;
           dispatch(setCredentials(null));
           dispatch(apiSlice.util.resetApiState());
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    refreshAccessToken: builder.mutation({
+      query: () => ({
+        url: "/auth/refresh-access-token",
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(setCredentials(result.data.token));
         } catch (error) {
           console.log(error);
         }

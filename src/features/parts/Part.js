@@ -8,7 +8,7 @@ const Part = ({ partId, partType }) => {
 
   const part = useSelector((state) => selectPartById(state, partId));
 
-  return part.type === partType ? (
+  return part && part.type === partType ? (
     <div>
       <p>{part.name}</p>
       <button onClick={() => navigate(`/parts/edit/${partId}`)}>edit</button>

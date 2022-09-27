@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { partTypes } from "../../../config";
 import { partTypeToName } from "../../../util";
@@ -24,6 +24,8 @@ import FlightControllerForm from "./FlightControllerForm";
 import ElectronicSpeedControllerForm from "./ElectronicSpeedControllerForm";
 
 const PartEditor = () => {
+  const navigate = useNavigate();
+
   const { partId } = useParams();
   const part = useSelector((state) => selectPartById(state, partId));
 
@@ -31,30 +33,78 @@ const PartEditor = () => {
 
   const [
     createPart,
-    { isCreateLoading, isCreateSuccess, isCreateError, createError },
+    {
+      data: createdPart,
+      isLoading: isCreateLoading,
+      isSuccess: isCreateSuccess,
+      isError: isCreateError,
+      error: createError,
+    },
   ] = useCreatePartMutation();
+
+  useEffect(() => {
+    if (isCreateSuccess) {
+      console.log(createdPart);
+      navigate("/parts");
+    }
+  }, [isCreateSuccess, createdPart, navigate]);
 
   const [
     updatePart,
-    { isUpdateLoading, isUpdateSuccess, isUpdateError, updateError },
+    {
+      data: updatedPart,
+      isLoading: isUpdateLoading,
+      isSuccess: isUpdateSuccess,
+      isError: isUpdateError,
+      error: updateError,
+    },
   ] = useUpdatePartMutation();
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      console.log(updatedPart);
+      navigate("/parts");
+    }
+  }, [isUpdateSuccess, updatedPart, navigate]);
 
   const [
     deletePart,
-    { isDeleteLoading, isDeleteSuccess, isDeleteError, deleteError },
+    {
+      isLoading: isDeleteLoading,
+      isSuccess: isDeleteSuccess,
+      isError: isDeleteError,
+      error: deleteError,
+    },
   ] = useDeletePartMutation();
+
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      console.log("deleted");
+      navigate("/parts");
+    }
+  }, [isDeleteSuccess, navigate]);
 
   const handleOnSubmit = (part) => {
     if (partId === "new") {
       createPart(part);
     } else {
-      updatePart({ ...part, partId });
+      updatePart({ part, partId });
     }
   };
 
-  const handleOnDelete = (partId) => {
-    deletePart(partId);
-  };
+  const renderLoader = () =>
+    isCreateLoading || isUpdateLoading || isDeleteLoading ? (
+      <p>Loading...</p>
+    ) : null;
+
+  const renderError = () =>
+    isCreateError || isUpdateError || isDeleteError ? (
+      <div>
+        {isCreateError && <p>{createError?.data?.message}</p>}
+        {isUpdateError && <p>{updateError?.data?.message}</p>}
+        {isDeleteError && <p>{deleteError?.data?.message}</p>}
+      </div>
+    ) : null;
 
   const renderSelect = () =>
     part ? null : (
@@ -78,7 +128,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.frame:
@@ -87,7 +136,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.battery:
@@ -96,7 +144,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.propeller:
@@ -105,7 +152,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.radioReceiver:
@@ -114,7 +160,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.videoCamera:
@@ -123,7 +168,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.videoAntenna:
@@ -132,7 +176,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.videoTransmitter:
@@ -141,7 +184,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.flightController:
@@ -150,7 +192,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       case partTypes.electronicSpeedController:
@@ -159,7 +200,6 @@ const PartEditor = () => {
             part={part}
             partType={partType}
             handleOnSubmit={handleOnSubmit}
-            handleOnDelete={handleOnDelete}
           />
         );
       default:
@@ -167,11 +207,19 @@ const PartEditor = () => {
     }
   };
 
+  const renderDelete = () =>
+    partId === "new" ? null : (
+      <button onClick={() => deletePart(partId)}>delete</button>
+    );
+
   return (
     <div>
       <h1>Part Editor</h1>
+      {renderLoader()}
+      {renderError()}
       {renderSelect()}
       {renderForm()}
+      {renderDelete()}
     </div>
   );
 };
