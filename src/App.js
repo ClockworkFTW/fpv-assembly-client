@@ -7,6 +7,7 @@ import SignUp from "./features/auth/SignUp";
 import PartsMenu from "./features/parts/PartsMenu";
 import PartsList from "./features/parts/PartsList";
 import PartEditor from "./features/parts/PartEditor";
+import Prefetch from "./features/auth/Prefetch";
 
 const App = () => {
   return (
@@ -15,10 +16,12 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
-        <Route path="parts">
-          <Route index element={<PartsMenu />} />
-          <Route path=":partType" element={<PartsList />} />
-          <Route path="edit/:partId" element={<PartEditor />} />
+        <Route element={<Prefetch />}>
+          <Route path="parts">
+            <Route index element={<PartsMenu />} />
+            <Route path=":partType" element={<PartsList />} />
+            <Route path="edit/:partId" element={<PartEditor />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

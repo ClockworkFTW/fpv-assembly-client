@@ -7,7 +7,7 @@ const partsAdapter = createEntityAdapter({
 
 const initialState = partsAdapter.getInitialState();
 
-const partsApiSlice = apiSlice.injectEndpoints({
+export const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getParts: builder.query({
       query: () => ({

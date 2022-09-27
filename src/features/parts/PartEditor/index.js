@@ -48,7 +48,7 @@ const PartEditor = () => {
     if (partId === "new") {
       createPart(part);
     } else {
-      updatePart(part);
+      updatePart({ ...part, partId });
     }
   };
 

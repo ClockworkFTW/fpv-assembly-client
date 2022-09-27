@@ -45,6 +45,7 @@ const MotorForm = ({ part, partType, handleOnSubmit }) => {
 
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleOnSubmit}
