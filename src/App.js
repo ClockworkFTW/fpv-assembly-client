@@ -8,6 +8,7 @@ import SignIn from "./features/auth/SignIn";
 import SignUp from "./features/auth/SignUp";
 import PartsMenu from "./features/parts/PartsMenu";
 import PartsList from "./features/parts/PartsList";
+import PartDetails from "./features/parts/PartDetails";
 import PartEditor from "./features/parts/PartEditor";
 import PrefetchParts from "./features/parts/PrefetchParts";
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="parts" element={<PrefetchParts />}>
             <Route index element={<PartsMenu />} />
             <Route path=":partType" element={<PartsList />} />
+            <Route path=":partType/:partId" element={<PartDetails />} />
             <Route element={<RequireAuth roles={[userRoles.admin]} />}>
               <Route path="edit/:partId" element={<PartEditor />} />
             </Route>

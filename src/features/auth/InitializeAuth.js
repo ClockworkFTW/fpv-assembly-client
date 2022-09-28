@@ -10,7 +10,7 @@ const InitializeAuth = () => {
 
   const token = useSelector(selectCurrentToken);
 
-  const [refresh, { isLoading }] = useRefreshAccessTokenMutation();
+  const [refresh] = useRefreshAccessTokenMutation();
 
   useEffect(() => {
     const shouldRun =
@@ -25,7 +25,7 @@ const InitializeAuth = () => {
     // eslint-disable-next-line
   }, []);
 
-  return isLoading ? null : <Outlet />;
+  return <Outlet />;
 };
 
 export default InitializeAuth;

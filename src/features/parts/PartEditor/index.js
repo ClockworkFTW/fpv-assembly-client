@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { partTypes } from "../../../config";
 import { partTypeToName } from "../../../util";
 
 import {
-  selectPartById,
+  useGetPartsQuery,
   useCreatePartMutation,
   useUpdatePartMutation,
   useDeletePartMutation,
@@ -27,14 +26,19 @@ const PartEditor = () => {
   const navigate = useNavigate();
 
   const { partId } = useParams();
-  const part = useSelector((state) => selectPartById(state, partId));
+
+  const { part } = useGetPartsQuery("partsList", {
+    selectFromResult: ({ data }) => ({
+      part: partId === "new" ? null : data?.entities[partId],
+    }),
+  });
 
   const [partType, setPartType] = useState(part ? part.type : partTypes.motor);
 
   const [
     createPart,
     {
-      data: createdPart,
+      data: createdData,
       isLoading: isCreateLoading,
       isSuccess: isCreateSuccess,
       isError: isCreateError,
@@ -44,15 +48,15 @@ const PartEditor = () => {
 
   useEffect(() => {
     if (isCreateSuccess) {
-      console.log(createdPart);
-      navigate("/parts");
+      const { id, type } = createdData.part;
+      navigate(`/parts/${type}/${id}`);
     }
-  }, [isCreateSuccess, createdPart, navigate]);
+  }, [isCreateSuccess, createdData, navigate]);
 
   const [
     updatePart,
     {
-      data: updatedPart,
+      data: updatedData,
       isLoading: isUpdateLoading,
       isSuccess: isUpdateSuccess,
       isError: isUpdateError,
@@ -62,10 +66,10 @@ const PartEditor = () => {
 
   useEffect(() => {
     if (isUpdateSuccess) {
-      console.log(updatedPart);
-      navigate("/parts");
+      const { id, type } = updatedData.part;
+      navigate(`/parts/${type}/${id}`);
     }
-  }, [isUpdateSuccess, updatedPart, navigate]);
+  }, [isUpdateSuccess, updatedData, navigate]);
 
   const [
     deletePart,
@@ -79,10 +83,9 @@ const PartEditor = () => {
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      console.log("deleted");
-      navigate("/parts");
+      navigate(`/parts/${partType}`);
     }
-  }, [isDeleteSuccess, navigate]);
+  }, [partType, isDeleteSuccess, navigate]);
 
   const handleOnSubmit = (part) => {
     if (partId === "new") {

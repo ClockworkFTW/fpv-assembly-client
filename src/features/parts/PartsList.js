@@ -15,7 +15,7 @@ const PartsList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetPartsQuery(null, {
+  } = useGetPartsQuery("partsList", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,

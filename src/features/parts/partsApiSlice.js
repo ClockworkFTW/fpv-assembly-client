@@ -56,7 +56,8 @@ export const {
 } = partsApiSlice;
 
 // returns the query result object
-export const selectPartsResult = partsApiSlice.endpoints.getParts.select();
+export const selectPartsResult =
+  partsApiSlice.endpoints.getParts.select("partsList");
 
 // creates memoized selector
 const selectPartsData = createSelector(
