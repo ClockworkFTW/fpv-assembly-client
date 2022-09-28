@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { selectCurrentToken } from "./authSlice";
 import { useRefreshAccessTokenMutation } from "./authApiSlice";
 
-const InitCredentials = () => {
+const InitializeAuth = () => {
   const effectRan = useRef(false);
 
   const token = useSelector(selectCurrentToken);
@@ -28,4 +28,4 @@ const InitCredentials = () => {
   return isLoading ? null : <Outlet />;
 };
 
-export default InitCredentials;
+export default InitializeAuth;

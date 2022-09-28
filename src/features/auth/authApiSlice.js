@@ -14,7 +14,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
         } catch (error) {
-          console.log(error);
+          console.log(error); // TODO: Remove in prod
         }
       },
     }),
@@ -29,7 +29,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
         } catch (error) {
-          console.log(error);
+          console.log(error); // TODO: Remove in prod
         }
       },
     }),
@@ -44,7 +44,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           dispatch(setCredentials(null));
           dispatch(apiSlice.util.resetApiState());
         } catch (error) {
-          console.log(error);
+          console.log(error); // TODO: Remove in prod
         }
       },
     }),
@@ -58,7 +58,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
         } catch (error) {
-          console.log(error);
+          console.log(error); // TODO: Remove in prod
         }
       },
     }),

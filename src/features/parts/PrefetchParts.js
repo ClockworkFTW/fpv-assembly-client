@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { store } from "../../app/store";
-import { partsApiSlice } from "../parts/partsApiSlice";
+import { partsApiSlice } from "./partsApiSlice";
 import { Outlet } from "react-router-dom";
 
-const Prefetch = () => {
+const PrefetchParts = () => {
   useEffect(() => {
-    console.log("subscribing");
+    // console.log("subscribing");
     const parts = store.dispatch(partsApiSlice.endpoints.getParts.initiate());
 
     return () => {
-      console.log("unsubscribing");
+      // console.log("unsubscribing");
       parts.unsubscribe();
     };
   }, []);
@@ -17,4 +17,4 @@ const Prefetch = () => {
   return <Outlet />;
 };
 
-export default Prefetch;
+export default PrefetchParts;

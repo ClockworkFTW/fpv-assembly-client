@@ -10,3 +10,8 @@ export const partTypes = {
   flightController: "flight-controller",
   electronicSpeedController: "electronic-speed-controller",
 };
+
+export const userRoles = {
+  user: "user",
+  admin: "admin",
+};

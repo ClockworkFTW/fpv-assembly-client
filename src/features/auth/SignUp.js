@@ -35,7 +35,8 @@ const SignUp = () => {
   return (
     <div>
       <h1>Sign Up</h1>
-      {isError && <p>{error.data.message}</p>}
+      {isError && <p>{error.data?.message}</p>}
+      {isLoading && <p>Loading...</p>}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -65,6 +66,23 @@ const SignUp = () => {
           <button type="submit">Sign Up</button>
         </Form>
       </Formik>
+      <ul>
+        <li>
+          <a href="https://jnb-api.ngrok.io/api/auth/sign-in/google">
+            Sign up with Google
+          </a>
+        </li>
+        <li>
+          <a href="https://jnb-api.ngrok.io/api/auth/sign-in/facebook">
+            Sign up with Facebook
+          </a>
+        </li>
+        <li>
+          <a href="https://jnb-api.ngrok.io/api/auth/sign-in/apple">
+            Sign up with Apple
+          </a>
+        </li>
+      </ul>
       <p>
         Already have an account? Sign in <Link to="/sign-in">here</Link>.
       </p>
