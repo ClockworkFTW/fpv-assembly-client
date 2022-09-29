@@ -27,7 +27,7 @@ const PartEditor = () => {
 
   const { partId } = useParams();
 
-  const { part } = useGetPartsQuery("partsList", {
+  const { part } = useGetPartsQuery(undefined, {
     selectFromResult: ({ data }) => ({
       part: partId === "new" ? null : data?.entities[partId],
     }),
@@ -206,7 +206,7 @@ const PartEditor = () => {
           />
         );
       default:
-        break;
+        return null;
     }
   };
 

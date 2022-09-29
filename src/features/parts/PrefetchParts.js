@@ -7,7 +7,7 @@ import { partsApiSlice } from "./partsApiSlice";
 const PrefetchParts = () => {
   useEffect(() => {
     store.dispatch(
-      partsApiSlice.util.prefetch("getParts", "partsList", { force: true })
+      partsApiSlice.util.prefetch("getParts", undefined, { force: true })
     );
   }, []);
 

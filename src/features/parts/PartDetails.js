@@ -6,7 +6,7 @@ import { partTypes } from "../../config";
 const PartDetails = () => {
   const { partId, partType } = useParams();
 
-  const { part, status } = useGetPartsQuery("partsList", {
+  const { part, status } = useGetPartsQuery(undefined, {
     selectFromResult: ({ data, status }) => ({
       part: data?.entities[partId],
       status,

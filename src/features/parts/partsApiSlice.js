@@ -1,5 +1,7 @@
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+import { createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
+
+import { initializePartsFilter } from "./partsFilterSlice";
 
 const partsAdapter = createEntityAdapter({
   sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
@@ -10,12 +12,23 @@ const initialState = partsAdapter.getInitialState();
 export const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getParts: builder.query({
-      query: () => ({
-        url: `/parts`,
+      query: (partType) => ({
+        url: partType ? `/parts?type=${partType}` : `/parts`,
         method: "GET",
       }),
       transformResponse: ({ parts }) => {
         return partsAdapter.setAll(initialState, parts);
+      },
+      async onQueryStarted(partType, { dispatch, queryFulfilled }) {
+        if (partType) {
+          try {
+            const result = await queryFulfilled;
+            const parts = result.data.ids.map((id) => result.data.entities[id]);
+            dispatch(initializePartsFilter({ parts, partType }));
+          } catch (error) {
+            console.log(error); // TODO: Remove in prod
+          }
+        }
       },
       providesTags: (result) => {
         const tags = result.ids.map((id) => ({ type: "Part", id }));
@@ -54,23 +67,3 @@ export const {
   useUpdatePartMutation,
   useDeletePartMutation,
 } = partsApiSlice;
-
-// returns the query result object
-export const selectPartsResult =
-  partsApiSlice.endpoints.getParts.select("partsList");
-
-// creates memoized selector
-const selectPartsData = createSelector(
-  selectPartsResult,
-  (partsResult) => partsResult.data // normalized state object with ids & entities
-);
-
-// getSelectors creates these selectors and we rename them with aliases using destructuring
-export const {
-  selectAll: selectAllParts,
-  selectById: selectPartById,
-  selectIds: selectPartIds,
-  // Pass in a selector that returns the parts slice of state
-} = partsAdapter.getSelectors(
-  (state) => selectPartsData(state) ?? initialState
-);
