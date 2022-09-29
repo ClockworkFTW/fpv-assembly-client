@@ -11,3 +11,13 @@ export const partTypeToName = (partType, makePlural) => {
 
   return words.join(" ");
 };
+
+export const getSearchParams = (searchParams) => {
+  let obj = {};
+
+  for (const [key, value] of searchParams.entries()) {
+    obj[key] = value;
+  }
+
+  return obj;
+};

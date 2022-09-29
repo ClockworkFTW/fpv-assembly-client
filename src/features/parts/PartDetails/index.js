@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import { useGetPartsQuery } from "./partsApiSlice";
-import { partTypes } from "../../config";
+import { useGetPartsQuery } from "../partsApiSlice";
+import { partTypes } from "../../../config";
 
 const PartDetails = () => {
   const { partId, partType } = useParams();

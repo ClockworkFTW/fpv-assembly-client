@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useGetPartsQuery } from "./partsApiSlice";
+import { useGetPartsQuery } from "../partsApiSlice";
 
 const Part = ({ partId, partType }) => {
   const navigate = useNavigate();
