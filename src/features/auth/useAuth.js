@@ -10,7 +10,7 @@ const useAuth = () => {
       const { user } = jwtDecode(token);
       return user;
     } catch (error) {
-      console.log(error);
+      console.log(error); // TODO: Remove in prod
     }
   }
 };

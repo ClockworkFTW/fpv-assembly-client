@@ -18,14 +18,21 @@ const RangeFilter = ({ prop, unit = "", min, max, initialValue }) => {
     setValue(range);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [params, setParams] = useSearchParams();
 
   const onAfterChange = ([minValue, maxValue]) => {
     dispatch(setRange({ prop, minValue, maxValue }));
-    setSearchParams({
-      ...getSearchParams(searchParams),
-      [prop]: `${minValue}_${maxValue}`,
-    });
+
+    let { [prop]: x, ...newParams } = getSearchParams(params);
+
+    if (minValue !== min || maxValue !== max) {
+      newParams = {
+        ...getSearchParams(params),
+        [prop]: `${minValue}_${maxValue}`,
+      };
+    }
+
+    setParams(newParams);
   };
 
   const tipFormatter = (value) => `${value}${unit}`;

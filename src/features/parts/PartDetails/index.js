@@ -1,9 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
+import useAuth from "../../auth/useAuth";
 import { useGetPartsQuery } from "../partsApiSlice";
-import { partTypes } from "../../../config";
+import { partTypes, userRoles } from "../../../config";
 
 const PartDetails = () => {
+  const user = useAuth();
+  const navigate = useNavigate();
+
   const { partId, partType } = useParams();
 
   const { part, status } = useGetPartsQuery(undefined, {
@@ -12,6 +16,13 @@ const PartDetails = () => {
       status,
     }),
   });
+
+  const renderEditButton = (partId) => {
+    if (user?.role === userRoles.admin) {
+      const onClick = () => navigate(`/parts/edit/${partId}`);
+      return <button onClick={onClick}>edit</button>;
+    }
+  };
 
   const renderSpecs = (part) => {
     switch (part.type) {
@@ -93,6 +104,7 @@ const PartDetails = () => {
       <h1>{part.name}</h1>
       <img src={part.image} alt={`${part.type}`} />
       {renderSpecs(part)}
+      {renderEditButton(part.id)}
     </div>
   ) : (
     <p>Part not found...</p>

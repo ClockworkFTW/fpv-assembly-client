@@ -13,10 +13,10 @@ const InitializeAuth = () => {
   const [refresh] = useRefreshAccessTokenMutation();
 
   useEffect(() => {
-    const shouldRun =
-      effectRan.current === true || process.env.NODE_ENV !== "development";
-
-    if (!token && shouldRun) {
+    if (
+      !token &&
+      (effectRan.current === true || process.env.NODE_ENV !== "development")
+    ) {
       refresh();
     }
 
@@ -24,6 +24,8 @@ const InitializeAuth = () => {
 
     // eslint-disable-next-line
   }, []);
+
+  // TODO: Block outlet until effect has run
 
   return <Outlet />;
 };

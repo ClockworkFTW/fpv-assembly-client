@@ -1,7 +1,8 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 
+import useAuth from "./useAuth";
 import { useSignUpMutation } from "./authApiSlice";
 
 const initialValues = {
@@ -25,6 +26,8 @@ const validationSchema = Yup.object({
 });
 
 const SignUp = () => {
+  const user = useAuth();
+
   const [signUp, { isLoading, isSuccess, isError, error }] =
     useSignUpMutation();
 
@@ -32,7 +35,9 @@ const SignUp = () => {
     signUp(credentials);
   };
 
-  return (
+  return user ? (
+    <Navigate to="/" />
+  ) : (
     <div>
       <h1>Sign Up</h1>
       {isError && <p>{error.data?.message}</p>}
