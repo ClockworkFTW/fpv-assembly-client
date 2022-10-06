@@ -10,7 +10,6 @@ import PartsMenu from "./features/parts/PartsMenu";
 import PartsList from "./features/parts/PartsList";
 import PartDetails from "./features/parts/PartDetails";
 import PartEditor from "./features/parts/PartEditor";
-import PrefetchParts from "./features/parts/PrefetchParts";
 
 import { userRoles } from "./config";
 
@@ -22,7 +21,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />
-          <Route path="parts" element={<PrefetchParts />}>
+          <Route path="parts">
             <Route index element={<PartsMenu />} />
             <Route path=":partType" element={<PartsList />} />
             <Route path=":partType/:partId" element={<PartDetails />} />

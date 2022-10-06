@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 
 import useAuth from "../../auth/useAuth";
-import { useGetPartsQuery } from "../partsApiSlice";
+import { useGetPartQuery } from "../partsApiSlice";
 import { partTypes, userRoles } from "../../../config";
 
 import PriceChart from "./PriceChart";
@@ -12,12 +12,7 @@ const PartDetails = () => {
 
   const { partId, partType } = useParams();
 
-  const { part, status } = useGetPartsQuery(undefined, {
-    selectFromResult: ({ data, status }) => ({
-      part: data?.entities[partId],
-      status,
-    }),
-  });
+  const { data: part, isLoading } = useGetPartQuery(partId);
 
   const renderEditButton = (partId) => {
     if (user?.role === userRoles.admin) {
@@ -101,18 +96,16 @@ const PartDetails = () => {
 
   const renderListings = (listings) => (
     <ul>
-      {listings.map((listing, i) => {
-        const latestPrice = listing.prices[listing.prices.length - 1].value;
-        return (
-          <li key={i}>
-            {listing.vendor} - ${latestPrice}
-          </li>
-        );
-      })}
+      {listings.map((listing, i) => (
+        <li key={i}>
+          {listing.vendor} - $
+          {listing.priceHistory[listing.priceHistory.length - 1].value}
+        </li>
+      ))}
     </ul>
   );
 
-  return status !== "fulfilled" ? (
+  return isLoading ? (
     <p>Loading...</p>
   ) : part && part.type === partType ? (
     <div>

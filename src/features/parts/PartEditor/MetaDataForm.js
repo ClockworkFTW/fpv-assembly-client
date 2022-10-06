@@ -26,19 +26,25 @@ const MetaDataForm = () => (
   </>
 );
 
+export const metaDataInitialValues = (part, partType) => ({
+  type: partType,
+  name: part?.name ?? "",
+  manufacturer: part?.manufacturer ?? "",
+  image: part?.image ?? "",
+  weight: part?.weight ?? 0,
+});
+
 export const metaDataValidationSchema = Yup.object({
-  metaData: Yup.object({
-    name: Yup.string()
-      .max(50, "Must be 50 characters or less")
-      .required("Required"),
-    manufacturer: Yup.string()
-      .max(25, "Must be 25 characters or less")
-      .required("Required"),
-    image: Yup.string()
-      .max(200, "Must be 200 characters or less")
-      .required("Required"),
-    weight: Yup.number().positive("Must be positive").required("Required"),
-  }),
+  name: Yup.string()
+    .max(50, "Must be 50 characters or less")
+    .required("Required"),
+  manufacturer: Yup.string()
+    .max(25, "Must be 25 characters or less")
+    .required("Required"),
+  image: Yup.string()
+    .max(200, "Must be 200 characters or less")
+    .required("Required"),
+  weight: Yup.number().positive("Must be positive").required("Required"),
 });
 
 export default MetaDataForm;

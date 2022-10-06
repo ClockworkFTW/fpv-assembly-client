@@ -35,6 +35,13 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         return [{ type: "Part", id: "LIST" }, ...tags];
       },
     }),
+    getPart: builder.query({
+      query: (partId) => ({
+        url: `/parts/${partId}`,
+        method: "GET",
+      }),
+      transformResponse: ({ part }) => part,
+    }),
     createPart: builder.mutation({
       query: (part) => ({
         url: `/parts`,
@@ -63,6 +70,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPartsQuery,
+  useGetPartQuery,
   useCreatePartMutation,
   useUpdatePartMutation,
   useDeletePartMutation,

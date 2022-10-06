@@ -32,8 +32,8 @@ const colors = [
 ];
 
 const PriceChart = ({ listings }) => {
-  const labels = listings.reduce((dates, { prices }) => {
-    prices.forEach(({ date }) => {
+  const labels = listings.reduce((dates, { priceHistory }) => {
+    priceHistory.forEach(({ date }) => {
       if (!dates.includes(date)) {
         dates.push(date);
       }
@@ -41,10 +41,10 @@ const PriceChart = ({ listings }) => {
     return dates;
   }, []);
 
-  const datasets = listings.reduce((datasets, { vendor, prices }, i) => {
+  const datasets = listings.reduce((datasets, { vendor, priceHistory }, i) => {
     let data = [];
 
-    prices.forEach(({ value, date }) => {
+    priceHistory.forEach(({ value, date }) => {
       if (labels.includes(date)) {
         data.push(value);
       }

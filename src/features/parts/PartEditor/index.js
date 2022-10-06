@@ -5,7 +5,7 @@ import { partTypes } from "../../../config";
 import { partTypeToName } from "../../../util";
 
 import {
-  useGetPartsQuery,
+  useGetPartQuery,
   useCreatePartMutation,
   useUpdatePartMutation,
   useDeletePartMutation,
@@ -27,9 +27,9 @@ const PartEditor = () => {
 
   const { partId } = useParams();
 
-  const { part } = useGetPartsQuery(undefined, {
+  const { part } = useGetPartQuery(partId, {
     selectFromResult: ({ data }) => ({
-      part: partId === "new" ? null : data?.entities[partId],
+      part: partId === "new" ? null : data,
     }),
   });
 
