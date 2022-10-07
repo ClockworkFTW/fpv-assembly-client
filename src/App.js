@@ -10,8 +10,12 @@ import PartsMenu from "./features/parts/PartsMenu";
 import PartsList from "./features/parts/PartsList";
 import PartDetails from "./features/parts/PartDetails";
 import PartEditor from "./features/parts/PartEditor";
+import BuildsList from "./features/builds/BuildsList";
+import BuildDetails from "./features/builds/BuildDetails";
+import BuildEditor from "./features/builds/BuildEditor";
 
 import { userRoles } from "./config";
+const { user, admin } = userRoles;
 
 const App = () => {
   return (
@@ -25,8 +29,15 @@ const App = () => {
             <Route index element={<PartsMenu />} />
             <Route path=":partType" element={<PartsList />} />
             <Route path=":partType/:partId" element={<PartDetails />} />
-            <Route element={<RequireAuth roles={[userRoles.admin]} />}>
+            <Route element={<RequireAuth roles={[admin]} />}>
               <Route path="edit/:partId" element={<PartEditor />} />
+            </Route>
+          </Route>
+          <Route path="builds">
+            <Route index element={<BuildsList />} />
+            <Route path=":buildId" element={<BuildDetails />} />
+            <Route element={<RequireAuth roles={[user, admin]} />}>
+              <Route path="edit/:buildId" element={<BuildEditor />} />
             </Route>
           </Route>
         </Route>
