@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-import { setTags } from "./partsFilterSlice";
+import { setTags } from "../partsFilterSlice";
 import { getSearchParams } from "../../../util";
 
 const TagsFilter = ({ prop, tags }) => {

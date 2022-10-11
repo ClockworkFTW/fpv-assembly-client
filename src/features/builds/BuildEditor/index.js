@@ -8,6 +8,7 @@ import {
 } from "../buildsApiSlice";
 
 import BuildForm from "./BuildForm";
+import BuildParts from "./BuildParts";
 
 const BuildEditor = () => {
   const navigate = useNavigate();
@@ -78,7 +79,12 @@ const BuildEditor = () => {
       <h1>Build Editor</h1>
       {renderLoader()}
       {renderError()}
-      <BuildForm build={build} handleOnSubmit={handleOnSubmit} />
+      <BuildForm
+        name={build.name}
+        markdown={build.markdown}
+        handleOnSubmit={handleOnSubmit}
+      />
+      <BuildParts buildId={build.id} parts={build.parts} />
     </div>
   ) : (
     <p>Build not found...</p>

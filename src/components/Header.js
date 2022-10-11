@@ -1,21 +1,33 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useSignOutMutation } from "../features/auth/authApiSlice";
 import useAuth from "../features/auth/useAuth";
+import { useSignOutMutation } from "../features/auth/authApiSlice";
+import { clearActiveBuildId } from "../features/builds/activeBuildIdSlice";
+
+import PartsMenu from "../features/parts/PartsList/PartsMenu";
 
 const Header = () => {
-  const [signOut] = useSignOutMutation();
+  const dispatch = useDispatch();
+
   const user = useAuth();
+
+  const [signOut] = useSignOutMutation();
+
+  const onSignOutClicked = async () => {
+    await signOut();
+    dispatch(clearActiveBuildId());
+  };
 
   return (
     <div>
       <Link to="/">FPV Assembly</Link>
-      <Link to="/parts">Parts</Link>
       <Link to="/builds">Builds</Link>
+      <PartsMenu />
       {user ? (
         <>
           <Link to={`/profile/${user.id}`}>{user.username}</Link>
-          <button onClick={signOut}>Sign Out</button>
+          <button onClick={onSignOutClicked}>Sign Out</button>
         </>
       ) : (
         <>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
@@ -10,14 +10,21 @@ const InitializeAuth = () => {
 
   const token = useSelector(selectCurrentToken);
 
-  const [refresh] = useRefreshAccessTokenMutation();
+  const [refresh, { isUninitialized }] = useRefreshAccessTokenMutation();
+
+  const [refreshComplete, setRefreshComplete] = useState(false);
+
+  const refreshToken = async () => {
+    await refresh();
+    setRefreshComplete(true);
+  };
 
   useEffect(() => {
-    if (
-      !token &&
-      (effectRan.current === true || process.env.NODE_ENV !== "development")
-    ) {
-      refresh();
+    const env = process.env.NODE_ENV;
+
+    // Ignore React strict mode double render
+    if (!token && (effectRan.current === true || env !== "development")) {
+      refreshToken();
     }
 
     return () => (effectRan.current = true);
@@ -25,9 +32,7 @@ const InitializeAuth = () => {
     // eslint-disable-next-line
   }, []);
 
-  // TODO: Block outlet until effect has run
-
-  return <Outlet />;
+  return !isUninitialized && refreshComplete ? <Outlet /> : null;
 };
 
 export default InitializeAuth;

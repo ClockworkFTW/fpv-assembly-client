@@ -1,15 +1,8 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-import useAuth from "../../auth/useAuth";
-import { useGetBuildsQuery, useCreateBuildMutation } from "../buildsApiSlice";
+import { useGetBuildsQuery } from "../buildsApiSlice";
 
 import Build from "./Build";
 
-const BuildList = () => {
-  const user = useAuth();
-  const navigate = useNavigate();
-
+const BuildsList = () => {
   const {
     data: builds,
     isLoading,
@@ -21,24 +14,6 @@ const BuildList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-
-  const [
-    createBuild,
-    {
-      data: createdData,
-      isLoading: isCreateLoading,
-      isSuccess: isCreateSuccess,
-      isError: isCreateError,
-      error: createError,
-    },
-  ] = useCreateBuildMutation();
-
-  useEffect(() => {
-    if (isCreateSuccess) {
-      const { id } = createdData.build;
-      navigate(`/builds/edit/${id}`);
-    }
-  }, [isCreateSuccess, createdData, navigate]);
 
   let content = null;
 
@@ -56,13 +31,7 @@ const BuildList = () => {
     content = <p>Error: {error}</p>;
   }
 
-  return (
-    <div>
-      <h1>Builds</h1>
-      {user && <button onClick={createBuild}>Create Build</button>}
-      {content}
-    </div>
-  );
+  return content;
 };
 
-export default BuildList;
+export default BuildsList;

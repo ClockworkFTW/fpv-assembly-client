@@ -1,11 +1,17 @@
+import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import useAuth from "../../auth/useAuth";
 import { useGetBuildQuery } from "../buildsApiSlice";
+import { setActiveBuildId } from "../activeBuildIdSlice";
+
+import BuildParts from "./BuildParts";
 
 const PartDetails = () => {
-  const user = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useAuth();
 
   const { buildId } = useParams();
 
@@ -13,7 +19,11 @@ const PartDetails = () => {
 
   const renderEditButton = (build) => {
     if (user?.id === build.user.id) {
-      const onClick = () => navigate(`/builds/edit/${build.id}`);
+      const onClick = () => {
+        dispatch(setActiveBuildId(build.id));
+        navigate(`/builds/edit/${build.id}`);
+      };
+
       return <button onClick={onClick}>edit</button>;
     }
   };
@@ -25,6 +35,7 @@ const PartDetails = () => {
       {renderEditButton(build)}
       <h1>{build.name}</h1>
       <p>{build.markdown}</p>
+      <BuildParts parts={build.parts} />
     </div>
   ) : (
     <p>Build not found...</p>

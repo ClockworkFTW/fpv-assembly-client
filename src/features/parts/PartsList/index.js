@@ -6,7 +6,6 @@ import { partTypes } from "../../../config";
 import { partTypeToName } from "../../../util";
 
 import Part from "./Part";
-import PartsFilter from "../PartsFilter";
 
 const PartsList = () => {
   const { partType } = useParams();
@@ -75,7 +74,6 @@ const PartsList = () => {
   return (
     <div>
       <h1>{partName}</h1>
-      <PartsFilter />
       {content}
     </div>
   );

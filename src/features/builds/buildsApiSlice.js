@@ -28,6 +28,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       transformResponse: ({ build }) => build,
+      providesTags: (result, error, arg) => [{ type: "Build", id: arg }],
     }),
     createBuild: builder.mutation({
       query: (build) => ({
@@ -57,6 +58,9 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         url: `/builds/${buildId}/parts/${partId}`,
         method: "POST",
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
     }),
     updateBuildPart: builder.mutation({
       query: ({ buildId, partId, quantity }) => ({
@@ -64,12 +68,18 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { quantity },
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
     }),
     deleteBuildPart: builder.mutation({
       query: ({ buildId, partId }) => ({
         url: `/builds/${buildId}/parts/${partId}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
     }),
   }),
 });

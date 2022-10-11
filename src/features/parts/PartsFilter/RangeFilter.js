@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-import { setRange } from "./partsFilterSlice";
+import { setRange } from "../partsFilterSlice";
 import { getSearchParams } from "../../../util";
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSearchParams } from "../../../util";
-import { partTypes } from "../../../config";
+import { getSearchParams } from "../../util";
+import { partTypes } from "../../config";
 
 const initializeRange = (prop, parts) => {
   const params = getSearchParams(new URLSearchParams(window.location.search));
