@@ -1,48 +1,42 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-import { setRange } from "../partsFilterSlice";
-import { getSearchParams } from "../../../util";
-
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
-const RangeFilter = ({ prop, unit = "", min, max, initialValue }) => {
-  const dispatch = useDispatch();
+const RangeFilter = (props) => {
+  const { prop, label, unit = "", step = 1, min, max, initialValue } = props;
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(initialValue);
 
   const onChange = (range) => {
     setValue(range);
   };
 
-  const [params, setParams] = useSearchParams();
-
   const onAfterChange = ([minValue, maxValue]) => {
-    dispatch(setRange({ prop, minValue, maxValue }));
-
-    let { [prop]: x, ...newParams } = getSearchParams(params);
-
     if (minValue !== min || maxValue !== max) {
-      newParams = {
-        ...getSearchParams(params),
-        [prop]: `${minValue}_${maxValue}`,
-      };
+      if (searchParams.has(prop)) {
+        searchParams.set(prop, `{"min":${minValue},"max":${maxValue}}`);
+      } else {
+        searchParams.append(prop, `{"min":${minValue},"max":${maxValue}}`);
+      }
+    } else {
+      searchParams.delete(prop);
     }
-
-    setParams(newParams);
+    setSearchParams(searchParams);
   };
 
   const tipFormatter = (value) => `${value}${unit}`;
 
   return (
     <div>
-      <label>{prop}</label>
+      <label>{label}</label>
       <Range
         min={min}
         max={max}
+        step={step}
         value={value}
         onChange={onChange}
         onAfterChange={onAfterChange}

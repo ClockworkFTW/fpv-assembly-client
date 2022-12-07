@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 import { partTypeToName } from "../../../util";
 import { partTypes } from "../../../config";
@@ -12,7 +13,7 @@ const PartsMenu = () => {
 
   const onLinkClicked = (value) => {
     setIsVisible(false);
-    navigate(`/parts/${value}`);
+    navigate(`/parts/${value}?page=1`);
   };
 
   const renderMenu = () => {

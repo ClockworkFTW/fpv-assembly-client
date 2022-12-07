@@ -1,8 +1,6 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
-import { initializePartsFilter } from "./partsFilterSlice";
-
 const partsAdapter = createEntityAdapter({
   sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
 });
@@ -12,26 +10,16 @@ const initialState = partsAdapter.getInitialState();
 export const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getParts: builder.query({
-      query: (partType) => ({
-        url: partType ? `/parts?type=${partType}` : `/parts`,
+      query: (query) => ({
+        url: `/parts?${query}`,
         method: "GET",
       }),
-      transformResponse: ({ parts }) => {
-        return partsAdapter.setAll(initialState, parts);
+      transformResponse: ({ parts, filter, pagination }) => {
+        const normalizedParts = partsAdapter.setAll(initialState, parts);
+        return { parts: normalizedParts, filter, pagination };
       },
-      async onQueryStarted(partType, { dispatch, queryFulfilled }) {
-        if (partType) {
-          try {
-            const result = await queryFulfilled;
-            const parts = result.data.ids.map((id) => result.data.entities[id]);
-            dispatch(initializePartsFilter({ parts, partType }));
-          } catch (error) {
-            console.log(error); // TODO: Remove in prod
-          }
-        }
-      },
-      providesTags: (result) => {
-        const tags = result.ids.map((id) => ({ type: "Part", id }));
+      providesTags: ({ parts }) => {
+        const tags = parts.ids.map((id) => ({ type: "Part", id }));
         return [{ type: "Part", id: "LIST" }, ...tags];
       },
     }),

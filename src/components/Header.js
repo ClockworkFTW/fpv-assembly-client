@@ -5,7 +5,7 @@ import useAuth from "../features/auth/useAuth";
 import { useSignOutMutation } from "../features/auth/authApiSlice";
 import { clearActiveBuildId } from "../features/builds/activeBuildIdSlice";
 
-import PartsMenu from "../features/parts/PartsList/PartsMenu";
+import PartsMenu from "../features/parts/PartsMenu";
 
 const Header = () => {
   const dispatch = useDispatch();

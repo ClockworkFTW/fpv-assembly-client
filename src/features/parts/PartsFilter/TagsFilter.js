@@ -1,74 +1,70 @@
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { setTags } from "../partsFilterSlice";
-import { getSearchParams } from "../../../util";
-
-const TagsFilter = ({ prop, tags }) => {
-  const dispatch = useDispatch();
-
-  const [params, setParams] = useSearchParams();
+const TagsFilter = ({ name, initialValue }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [value, setValue] = useState(initialValue);
 
   const handleCheckAll = (checked) => {
-    if (!checked) {
-      const newTags = Object.entries(tags).reduce(
-        (obj, [key]) => ({ ...obj, [key]: key === "All" ? true : false }),
-        {}
-      );
+    if (checked) return;
 
-      dispatch(setTags({ prop, newTags }));
+    const tags = Object.entries(value).reduce(
+      (obj, [key]) => ({ ...obj, [key]: key === "All" ? true : false }),
+      {}
+    );
 
-      const { [prop]: x, ...newParams } = getSearchParams(params);
-
-      setParams(newParams);
-    }
+    setValue(tags);
+    updateSearchParams(tags);
   };
 
   const handleCheckTag = (tag, checked) => {
-    const newTags = { ...tags, All: true, [tag]: !checked };
+    const tags = { ...value, All: true, [tag]: !checked };
 
-    for (const [key, value] of Object.entries(newTags)) {
+    for (const [key, value] of Object.entries(tags)) {
       if (key !== "All" && value) {
-        newTags.All = false;
+        tags.All = false;
         break;
       }
     }
 
-    dispatch(setTags({ prop, newTags }));
+    setValue(tags);
+    updateSearchParams(tags);
+  };
 
-    let checkedTags = null;
+  const updateSearchParams = (tags) => {
+    const checkedTags = [];
 
-    for (const [key, value] of Object.entries(newTags)) {
-      if (key !== "All" && value) {
-        if (!checkedTags) {
-          checkedTags = key;
-        } else {
-          checkedTags += `_${key}`;
-        }
+    Object.entries(tags).forEach(([tag, checked]) => {
+      if (checked && tag !== "All") {
+        checkedTags.push(tag);
       }
+    });
+
+    if (checkedTags.length) {
+      if (searchParams.has(name)) {
+        searchParams.set(name, `["${checkedTags.join('","')}"]`);
+      } else {
+        searchParams.append(name, `["${checkedTags.join('","')}"]`);
+      }
+    } else {
+      searchParams.delete(name);
     }
 
-    if (checkedTags) {
-      const newParams = { ...getSearchParams(params), [prop]: checkedTags };
-      setParams(newParams);
-    } else {
-      const { [prop]: x, ...newParams } = getSearchParams(params);
-      setParams(newParams);
-    }
+    setSearchParams(searchParams);
   };
 
   return (
     <div>
-      <label>{prop}</label>
+      <label>{name}</label>
       <label>
         <input
           type="checkbox"
-          checked={tags.All}
-          onChange={() => handleCheckAll(tags.All)}
+          checked={value.All}
+          onChange={() => handleCheckAll(value.All)}
         />
         All
       </label>
-      {Object.entries(tags).map(([tag, checked]) =>
+      {Object.entries(value).map(([tag, checked]) =>
         tag === "All" ? null : (
           <label key={tag}>
             <input
