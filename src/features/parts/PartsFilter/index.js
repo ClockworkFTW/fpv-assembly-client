@@ -7,6 +7,13 @@ import { partTypes } from "../../../config";
 import TagsFilter from "./TagsFilter";
 import RangeFilter from "./RangeFilter";
 
+const PartsFilter = ({ filter }) => (
+  <div>
+    <PartsMetaFilter filter={filter} />
+    <PartsSpecFilter filter={filter} />
+  </div>
+);
+
 const PartsMetaFilter = ({ filter }) => {
   const { currentPrice, manufacturer, weight } = filter;
 
@@ -115,12 +122,5 @@ const PartsSpecFilter = ({ filter }) => {
       return null;
   }
 };
-
-const PartsFilter = ({ filter }) => (
-  <div>
-    <PartsMetaFilter filter={filter} />
-    <PartsSpecFilter filter={filter} />
-  </div>
-);
 
 export default PartsFilter;

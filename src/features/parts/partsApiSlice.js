@@ -1,9 +1,7 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
-const partsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-});
+const partsAdapter = createEntityAdapter();
 
 const initialState = partsAdapter.getInitialState();
 

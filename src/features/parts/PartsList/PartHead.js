@@ -4,33 +4,94 @@ import styled from "styled-components";
 // Config
 import { partTypes } from "../../../config";
 
+// Components
+import Icon from "../../../components/Icon";
+
 const PartHead = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const sort = searchParams.get("sort");
+  const sortDirection = sort ? sort[0] : null;
+  const sortColumn = sort ? sort.slice(1, sort.length) : null;
+
   const onClick = (prop) => {
-    console.log(prop);
+    if (searchParams.has("sort")) {
+      const sign = searchParams.get("sort")[0];
+      if (sign === "+") {
+        searchParams.set("sort", `-${prop}`);
+      } else {
+        searchParams.set("sort", `+${prop}`);
+      }
+    } else {
+      searchParams.append("sort", `+${prop}`);
+    }
+    setSearchParams(searchParams);
   };
 
   return (
     <Row>
-      <PartMetaHead onClick={onClick} />
-      <PartSpecHead onClick={onClick} />
+      <PartMetaHead
+        sortDirection={sortDirection}
+        sortColumn={sortColumn}
+        onClick={onClick}
+      />
+      <PartSpecHead
+        sortDirection={sortDirection}
+        sortColumn={sortColumn}
+        onClick={onClick}
+      />
     </Row>
   );
 };
 
-const PartMetaHead = ({ onClick }) => {
+const PartMetaHead = ({ sortDirection, sortColumn, onClick }) => {
   return (
     <>
-      <Cell onClick={() => onClick("name")}>Name</Cell>
-      <Cell onClick={() => onClick("weight")}>Weight</Cell>
-      <Cell onClick={() => onClick("price")}>Price</Cell>
-      <Cell onClick={() => onClick("rating")}>Rating</Cell>
+      <Cell onClick={() => onClick("name")}>
+        {sortColumn === "name" ? (
+          sortDirection === "+" ? (
+            <Icon icon="caret-down" />
+          ) : (
+            <Icon icon="caret-up" />
+          )
+        ) : null}
+        Name
+      </Cell>
+      <Cell onClick={() => onClick("weight")}>
+        {sortColumn === "weight" ? (
+          sortDirection === "+" ? (
+            <Icon icon="caret-down" />
+          ) : (
+            <Icon icon="caret-up" />
+          )
+        ) : null}
+        Weight
+      </Cell>
+      <Cell onClick={() => onClick("currentPrice")}>
+        {sortColumn === "currentPrice" ? (
+          sortDirection === "+" ? (
+            <Icon icon="caret-down" />
+          ) : (
+            <Icon icon="caret-up" />
+          )
+        ) : null}
+        Price
+      </Cell>
+      <Cell onClick={() => onClick("ratingAverage")}>
+        {sortColumn === "ratingAverage" ? (
+          sortDirection === "+" ? (
+            <Icon icon="caret-down" />
+          ) : (
+            <Icon icon="caret-up" />
+          )
+        ) : null}
+        Rating
+      </Cell>
     </>
   );
 };
 
-const PartSpecHead = ({ onClick }) => {
+const PartSpecHead = ({ sortDirection, sortColumn, onClick }) => {
   const { partType } = useParams();
 
   switch (partType) {
