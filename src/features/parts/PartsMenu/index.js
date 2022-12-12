@@ -11,18 +11,18 @@ const PartsMenu = () => {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const onLinkClicked = (value) => {
+  const onLinkClicked = (queryParam) => {
     setIsVisible(false);
-    navigate(`/parts/${value}?page=1`);
+    navigate(`/parts/${queryParam}?page=1`);
   };
 
   const renderMenu = () => {
     if (isVisible) {
       return (
         <ul>
-          {Object.entries(partTypes).map(([key, value]) => (
-            <li key={key} onClick={() => onLinkClicked(value)}>
-              {partTypeToName(value, true)}
+          {Object.entries(partTypes).map(([partType]) => (
+            <li key={partType} onClick={() => onLinkClicked(partType)}>
+              {partTypeToName(partType, true)}
             </li>
           ))}
         </ul>

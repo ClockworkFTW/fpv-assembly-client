@@ -8,6 +8,9 @@ import { useGetPartsQuery } from "../partsApiSlice";
 // Config
 import { partTypes } from "../../../config";
 
+// Components
+import Rating from "../../../components/Rating";
+
 const PartRow = ({ partId }) => {
   const { partType } = useParams();
   const [searchParams] = useSearchParams();
@@ -26,15 +29,16 @@ const PartRow = ({ partId }) => {
 
   return (
     <Row>
-      <PartMetaRow partMeta={partMeta} />
+      <PartNameRow partMeta={partMeta} />
       <PartSpecRow partSpec={partSpec} />
+      <PartMetaRow partMeta={partMeta} />
     </Row>
   );
 };
 
-const PartMetaRow = ({ partMeta }) => (
+const PartNameRow = ({ partMeta }) => (
   <>
-    <Cell>
+    <Cell style={{ minWidth: "300px", maxWidth: "300px" }}>
       <Group>
         <Image src={partMeta.image} />
         <Name to={`/parts/${partMeta.type}/${partMeta.id}`}>
@@ -42,51 +46,90 @@ const PartMetaRow = ({ partMeta }) => (
         </Name>
       </Group>
     </Cell>
-    <Cell>{partMeta.weight}g</Cell>
-    <Cell>${partMeta.currentPrice}</Cell>
-    <Cell>
-      {partMeta.ratingAverage} ({partMeta.ratingCount})
-    </Cell>
   </>
 );
+
+const PartMetaRow = ({ partMeta }) => {
+  const { partType } = useParams();
+  const config = partTypes[partType];
+
+  return (
+    <>
+      <Cell>
+        {partMeta.weight}
+        {config.weight.unit}
+      </Cell>
+      <Cell>
+        <Group>
+          <Rating rating={partMeta.ratingAverage} /> ({partMeta.ratingCount})
+        </Group>
+      </Cell>
+      <Cell>
+        {config.currentPrice.unit}
+        {partMeta.currentPrice}
+      </Cell>
+    </>
+  );
+};
 
 const PartSpecRow = ({ partSpec }) => {
   const { partType } = useParams();
 
   switch (partType) {
-    case partTypes.motor:
+    case "motor": {
+      const config = partTypes[partType];
       return (
         <>
-          <Cell>{partSpec.kv}</Cell>
-          <Cell>{partSpec.motorDiameter}</Cell>
-          <Cell>{partSpec.motorHeight}</Cell>
-          <Cell>{partSpec.shaftDiameter}</Cell>
-          <Cell>{partSpec.motorMountWidth}</Cell>
-          <Cell>{partSpec.motorMountLength}</Cell>
+          <Cell>
+            {partSpec.kv}
+            {config.kv.unit}
+          </Cell>
+          <Cell>
+            {partSpec.motorDiameter}
+            {config.motorDiameter.unit}
+          </Cell>
+          <Cell>
+            {partSpec.motorHeight}
+            {config.motorHeight.unit}
+          </Cell>
+          <Cell>
+            {partSpec.shaftDiameter}
+            {config.shaftDiameter.unit}
+          </Cell>
+          <Cell>
+            {partSpec.motorMountWidth}
+            {config.motorMountWidth.unit}
+          </Cell>
+          <Cell>
+            {partSpec.motorMountLength}
+            {config.motorMountLength.unit}
+          </Cell>
         </>
       );
-    case partTypes.frame:
+    }
+
+    case "frame":
       // TODO: Add cells
       return null;
-    case partTypes.battery:
+    case "battery":
       // TODO: Add cells
       return null;
-    case partTypes.radioReceiver:
+    case "radio-receiver":
       // TODO: Add cells
       return null;
-    case partTypes.videoCamera:
+    case "video-camera":
       // TODO: Add cells
       return null;
-    case partTypes.videoAntenna:
+    case "video-antenna":
       // TODO: Add cells
       return null;
-    case partTypes.videoTransmitter:
+    case "video-transmitter":
       // TODO: Add cells
       return null;
-    case partTypes.flightController:
+    case "flight-controller":
       // TODO: Add cells
       return null;
-    case partTypes.electronicSpeedController:
+    case "electronic-speed-controller":
       // TODO: Add cells
       return null;
     default:
@@ -94,11 +137,13 @@ const PartSpecRow = ({ partSpec }) => {
   }
 };
 
-const Row = styled.tr`
-  border-top: 1px solid grey;
-`;
+const Row = styled.tr``;
 
-const Cell = styled.td``;
+const Cell = styled.td`
+  padding: 4px 8px;
+  border-top: 1px solid silver;
+  font-size: 14px;
+`;
 
 const Group = styled.div`
   display: flex;
@@ -106,12 +151,11 @@ const Group = styled.div`
 `;
 
 const Name = styled(Link)`
-  text-decoration: none;
   font-weight: 700;
-  color: black;
 `;
 
 const Image = styled.img`
+  margin-right: 10px;
   width: 50px;
   height: 50px;
   object-fit: contain;

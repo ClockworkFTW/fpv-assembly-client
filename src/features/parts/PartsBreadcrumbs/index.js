@@ -1,7 +1,11 @@
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
+// Config
+import { partTypes } from "../../../config";
+
 const PartsBreadcrumbs = ({ filter }) => {
+  const { partType } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleClick = (key) => {
@@ -11,49 +15,67 @@ const PartsBreadcrumbs = ({ filter }) => {
 
   return (
     <Container>
-      {Object.entries(filter).map(([key, val]) =>
-        "minLimit" in val && "maxLimit" in val ? (
-          <RangeBreadcrumb
-            key={key}
-            label={key}
-            config={val}
-            handleClick={handleClick}
-          />
-        ) : (
-          <TagsBreadcrumb
-            key={key}
-            label={key}
-            config={val}
-            handleClick={handleClick}
-          />
-        )
-      )}
+      {Object.entries(filter).map(([key, settings]) => {
+        const test = partTypes[partType][key];
+
+        if (!test) return null;
+
+        switch (test.filter) {
+          case "range":
+            return (
+              <RangeBreadcrumb
+                key={key}
+                prop={test.prop}
+                label={test.label}
+                unit={test.unit}
+                settings={settings}
+                handleClick={handleClick}
+              />
+            );
+          case "tags":
+            return (
+              <TagsBreadcrumb
+                key={key}
+                prop={test.prop}
+                label={test.label}
+                settings={settings}
+                handleClick={handleClick}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
     </Container>
   );
 };
 
-const RangeBreadcrumb = ({ label, config, handleClick }) => {
+const RangeBreadcrumb = ({ prop, label, unit, settings, handleClick }) => {
   const isActive =
-    config.minValue !== config.minLimit || config.maxValue !== config.maxLimit;
+    settings.minValue !== settings.minLimit ||
+    settings.maxValue !== settings.maxLimit;
 
   return isActive ? (
-    <Item onClick={() => handleClick(label)}>
-      {label}: {config.minValue} - {config.maxValue}
+    <Item onClick={() => handleClick(prop)}>
+      {`${label}: ${settings.minValue}${unit} - ${settings.maxValue}${unit}`}
     </Item>
   ) : null;
 };
 
-const TagsBreadcrumb = ({ label, config, handleClick }) => {
-  const content = Object.entries(config).reduce((content, [tag, isChecked]) => {
-    if (tag !== "All" && isChecked) {
-      return content === "" ? tag : `${content}, ${tag}`;
-    } else {
-      return content;
-    }
-  }, "");
+const TagsBreadcrumb = ({ prop, label, settings, handleClick }) => {
+  const content = Object.entries(settings).reduce(
+    (content, [tag, isChecked]) => {
+      if (tag !== "All" && isChecked) {
+        return content === "" ? tag : `${content}, ${tag}`;
+      } else {
+        return content;
+      }
+    },
+    ""
+  );
 
-  return !config["All"] ? (
-    <Item onClick={() => handleClick(label)}>
+  return !settings["All"] ? (
+    <Item onClick={() => handleClick(prop)}>
       {label}: {content}
     </Item>
   ) : null;
@@ -65,7 +87,8 @@ const Item = styled.div`
   display: inline-block;
   margin: 0 10px 10px 0;
   padding: 6px 12px;
-  background-color: grey;
+  border-radius: 4px;
+  background-color: silver;
   :hover {
     cursor: pointer;
   }

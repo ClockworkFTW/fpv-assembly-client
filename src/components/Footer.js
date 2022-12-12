@@ -1,9 +1,16 @@
+import styled from "styled-components";
+
 const Footer = () => {
   return (
-    <div>
+    <Container>
       <p>Footer</p>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 10px;
+  background-color: silver;
+`;
 
 export default Footer;

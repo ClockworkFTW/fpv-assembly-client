@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const TagsFilter = ({ name, initialValue }) => {
+const TagsFilter = ({ prop, label, initialValue }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(initialValue);
 
@@ -41,13 +41,13 @@ const TagsFilter = ({ name, initialValue }) => {
     });
 
     if (checkedTags.length) {
-      if (searchParams.has(name)) {
-        searchParams.set(name, `["${checkedTags.join('","')}"]`);
+      if (searchParams.has(prop)) {
+        searchParams.set(prop, `["${checkedTags.join('","')}"]`);
       } else {
-        searchParams.append(name, `["${checkedTags.join('","')}"]`);
+        searchParams.append(prop, `["${checkedTags.join('","')}"]`);
       }
     } else {
-      searchParams.delete(name);
+      searchParams.delete(prop);
     }
 
     setSearchParams(searchParams);
@@ -55,27 +55,33 @@ const TagsFilter = ({ name, initialValue }) => {
 
   return (
     <div>
-      <label>{name}</label>
-      <label>
-        <input
-          type="checkbox"
-          checked={value.All}
-          onChange={() => handleCheckAll(value.All)}
-        />
-        All
-      </label>
-      {Object.entries(value).map(([tag, checked]) =>
-        tag === "All" ? null : (
-          <label key={tag}>
+      <p>{label}</p>
+      <ul>
+        <li>
+          <label>
             <input
               type="checkbox"
-              checked={checked}
-              onChange={() => handleCheckTag(tag, checked)}
+              checked={value.All}
+              onChange={() => handleCheckAll(value.All)}
             />
-            {tag}
+            All
           </label>
-        )
-      )}
+        </li>
+        {Object.entries(value).map(([tag, checked]) =>
+          tag === "All" ? null : (
+            <li key={tag}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => handleCheckTag(tag, checked)}
+                />
+                {tag}
+              </label>
+            </li>
+          )
+        )}
+      </ul>
     </div>
   );
 };

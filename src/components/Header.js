@@ -1,10 +1,13 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
+// API
 import useAuth from "../features/auth/useAuth";
 import { useSignOutMutation } from "../features/auth/authApiSlice";
 import { clearActiveBuildId } from "../features/builds/activeBuildIdSlice";
 
+// Components
 import PartsMenu from "../features/parts/PartsMenu";
 
 const Header = () => {
@@ -20,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <Container>
       <Link to="/">FPV Assembly</Link>
       <Link to="/builds">Builds</Link>
       <PartsMenu />
@@ -35,8 +38,13 @@ const Header = () => {
           <Link to="/sign-up">Sign Up</Link>
         </>
       )}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 10px;
+  background-color: silver;
+`;
 
 export default Header;

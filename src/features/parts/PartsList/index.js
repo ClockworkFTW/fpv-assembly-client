@@ -18,6 +18,7 @@ const PartsList = ({ parts }) => (
 
 const Table = styled.table`
   width: 100%;
+  border-collapse: collapse;
 `;
 
 const TableHead = styled.thead``;

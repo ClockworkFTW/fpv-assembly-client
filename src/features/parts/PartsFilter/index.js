@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // Config
-import { partTypes } from "../../../config";
+import { partMeta, partTypes } from "../../../config";
 
 // Components
 import TagsFilter from "./TagsFilter";
@@ -14,110 +14,158 @@ const PartsFilter = ({ filter }) => (
   </div>
 );
 
-const PartsMetaFilter = ({ filter }) => {
-  const { currentPrice, manufacturer, weight } = filter;
-
-  return (
-    <>
-      <RangeFilter
-        key={JSON.stringify(weight)}
-        prop="weight"
-        label="Weight"
-        unit="g"
-        min={weight.minLimit}
-        max={weight.maxLimit}
-        initialValue={[weight.minValue, weight.maxValue]}
-      />
-      <RangeFilter
-        key={JSON.stringify(currentPrice)}
-        prop="currentPrice"
-        label="Price"
-        unit="$"
-        step={0.01}
-        min={currentPrice.minLimit}
-        max={currentPrice.maxLimit}
-        initialValue={[currentPrice.minValue, currentPrice.maxValue]}
-      />
-      <TagsFilter
-        key={JSON.stringify(manufacturer)}
-        name="manufacturer"
-        initialValue={manufacturer}
-      />
-    </>
-  );
-};
+const PartsMetaFilter = ({ filter }) => (
+  <>
+    <RangeFilter
+      key={"1" + JSON.stringify(filter.weight)}
+      prop={partMeta.weight.prop}
+      label={partMeta.weight.label}
+      unit={partMeta.weight.unit}
+      min={filter.weight.minLimit}
+      max={filter.weight.maxLimit}
+      initialValue={[filter.weight.minValue, filter.weight.maxValue]}
+    />
+    <RangeFilter
+      key={"2" + JSON.stringify(filter.currentPrice)}
+      prop={partMeta.currentPrice.prop}
+      label={partMeta.currentPrice.label}
+      unit={partMeta.currentPrice.unit}
+      step={0.01}
+      min={filter.currentPrice.minLimit}
+      max={filter.currentPrice.maxLimit}
+      initialValue={[
+        filter.currentPrice.minValue,
+        filter.currentPrice.maxValue,
+      ]}
+    />
+    <TagsFilter
+      key={"3" + JSON.stringify(filter.manufacturer)}
+      prop={partMeta.manufacturer.prop}
+      label={partMeta.manufacturer.label}
+      initialValue={filter.manufacturer}
+    />
+  </>
+);
 
 const PartsSpecFilter = ({ filter }) => {
   const { partType } = useParams();
-
   switch (partType) {
-    case partTypes.motor:
-      const { kv, motorDiameter, motorHeight, shaftDiameter } = filter;
-
+    case "motor": {
+      const config = partTypes["motor"];
       return (
         <>
           <RangeFilter
-            key={JSON.stringify(kv)}
-            prop="kv"
-            name="KV"
-            unit="kv"
-            min={kv.minLimit}
-            max={kv.maxLimit}
-            initialValue={[kv.minValue, kv.maxValue]}
+            key={"4" + JSON.stringify(filter.kv)}
+            prop={config.kv.prop}
+            label={config.kv.label}
+            unit={config.kv.unit}
+            min={filter.kv.minLimit}
+            max={filter.kv.maxLimit}
+            initialValue={[filter.kv.minValue, filter.kv.maxValue]}
           />
           <RangeFilter
-            key={JSON.stringify(motorDiameter)}
-            prop="motorDiameter"
-            label="Motor Diameter"
-            unit="mm"
-            min={motorDiameter.minLimit}
-            max={motorDiameter.maxLimit}
-            initialValue={[motorDiameter.minValue, motorDiameter.maxValue]}
+            key={"5" + JSON.stringify(filter.motorDiameter)}
+            prop={config.motorDiameter.prop}
+            label={config.motorDiameter.label}
+            unit={config.motorDiameter.unit}
+            min={filter.motorDiameter.minLimit}
+            max={filter.motorDiameter.maxLimit}
+            initialValue={[
+              filter.motorDiameter.minValue,
+              filter.motorDiameter.maxValue,
+            ]}
           />
           <RangeFilter
-            key={JSON.stringify(motorHeight)}
-            prop="motorHeight"
-            label="Motor Height"
-            unit="mm"
-            min={motorHeight.minLimit}
-            max={motorHeight.maxLimit}
-            initialValue={[motorHeight.minValue, motorHeight.maxValue]}
+            key={"6" + JSON.stringify(filter.motorHeight)}
+            prop={config.motorHeight.prop}
+            label={config.motorHeight.label}
+            unit={config.motorHeight.unit}
+            min={filter.motorHeight.minLimit}
+            max={filter.motorHeight.maxLimit}
+            initialValue={[
+              filter.motorHeight.minValue,
+              filter.motorHeight.maxValue,
+            ]}
           />
           <RangeFilter
-            key={JSON.stringify(shaftDiameter)}
-            prop="shaftDiameter"
-            label="Shaft Diameter"
-            unit="mm"
-            min={shaftDiameter.minLimit}
-            max={shaftDiameter.maxLimit}
-            initialValue={[shaftDiameter.minValue, shaftDiameter.maxValue]}
+            key={"7" + JSON.stringify(filter.shaftDiameter)}
+            prop={config.shaftDiameter.prop}
+            label={config.shaftDiameter.label}
+            unit={config.shaftDiameter.unit}
+            min={filter.shaftDiameter.minLimit}
+            max={filter.shaftDiameter.maxLimit}
+            initialValue={[
+              filter.shaftDiameter.minValue,
+              filter.shaftDiameter.maxValue,
+            ]}
+          />
+          <RangeFilter
+            key={"8" + JSON.stringify(filter.motorMountWidth)}
+            prop={config.motorMountWidth.prop}
+            label={config.motorMountWidth.label}
+            unit={config.motorMountWidth.unit}
+            min={filter.motorMountWidth.minLimit}
+            max={filter.motorMountWidth.maxLimit}
+            initialValue={[
+              filter.motorMountWidth.minValue,
+              filter.motorMountWidth.maxValue,
+            ]}
+          />
+          <RangeFilter
+            key={"9" + JSON.stringify(filter.motorMountLength)}
+            prop={config.motorMountLength.prop}
+            label={config.motorMountLength.label}
+            unit={config.motorMountLength.unit}
+            min={filter.motorMountLength.minLimit}
+            max={filter.motorMountLength.maxLimit}
+            initialValue={[
+              filter.motorMountLength.minValue,
+              filter.motorMountLength.maxValue,
+            ]}
           />
         </>
       );
-    case partTypes.frame:
+    }
+    case "frame": {
       // TODO: Add filters
+      const config = partTypes["frame"];
       return null;
-    case partTypes.battery:
+    }
+    case "battery": {
       // TODO: Add filters
+      const config = partTypes["battery"];
       return null;
-    case partTypes.radioReceiver:
+    }
+    case "radio-receiver": {
       // TODO: Add filters
+      const config = partTypes["radio-receiver"];
       return null;
-    case partTypes.videoCamera:
+    }
+    case "video-camera": {
       // TODO: Add filters
+      const config = partTypes["video-camera"];
       return null;
-    case partTypes.videoAntenna:
+    }
+    case "video-antenna": {
       // TODO: Add filters
+      const config = partTypes["video-antenna"];
       return null;
-    case partTypes.videoTransmitter:
+    }
+    case "video-transmitter": {
       // TODO: Add filters
+      const config = partTypes["video-transmitter"];
       return null;
-    case partTypes.flightController:
+    }
+    case "flight-controller": {
       // TODO: Add filters
+      const config = partTypes["flight-controller"];
       return null;
-    case partTypes.electronicSpeedController:
+    }
+    case "electronic-speed-controller": {
       // TODO: Add filters
+      const config = partTypes["electronic-speed-controller"];
       return null;
+    }
     default:
       return null;
   }

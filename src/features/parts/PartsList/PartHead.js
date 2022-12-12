@@ -14,7 +14,7 @@ const PartHead = () => {
   const sortDirection = sort ? sort[0] : null;
   const sortColumn = sort ? sort.slice(1, sort.length) : null;
 
-  const onClick = (prop) => {
+  const setSortProp = (prop) => {
     if (searchParams.has("sort")) {
       const sign = searchParams.get("sort")[0];
       if (sign === "+") {
@@ -29,118 +29,148 @@ const PartHead = () => {
   };
 
   return (
-    <Row>
-      <PartMetaHead
+    <tr>
+      <PartNameHead
         sortDirection={sortDirection}
         sortColumn={sortColumn}
-        onClick={onClick}
+        setSortProp={setSortProp}
       />
       <PartSpecHead
         sortDirection={sortDirection}
         sortColumn={sortColumn}
-        onClick={onClick}
+        setSortProp={setSortProp}
       />
-    </Row>
+      <PartMetaHead
+        sortDirection={sortDirection}
+        sortColumn={sortColumn}
+        setSortProp={setSortProp}
+      />
+    </tr>
   );
 };
 
-const PartMetaHead = ({ sortDirection, sortColumn, onClick }) => {
+const Wrapper = styled.td`
+  padding: 4px 8px;
+  border-bottom: 1px solid grey;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+`;
+
+const Cell = ({ prop, label, sortDirection, sortColumn, setSortProp }) => (
+  <Wrapper onClick={() => setSortProp(prop)}>
+    <Content>
+      <SortIcon
+        prop={prop}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+      />
+      {label}
+    </Content>
+  </Wrapper>
+);
+
+const SortIcon = ({ prop, sortColumn, sortDirection }) => {
+  if (sortColumn === prop) {
+    if (sortDirection === "+") {
+      return <Icon icon={["far", "caret-down"]} mr="6px" />;
+    }
+    if (sortDirection === "-") {
+      return <Icon icon={["far", "caret-up"]} mr="6px" />;
+    }
+  }
+};
+
+const PartNameHead = (props) => {
   return (
     <>
-      <Cell onClick={() => onClick("name")}>
-        {sortColumn === "name" ? (
-          sortDirection === "+" ? (
-            <Icon icon="caret-down" />
-          ) : (
-            <Icon icon="caret-up" />
-          )
-        ) : null}
-        Name
-      </Cell>
-      <Cell onClick={() => onClick("weight")}>
-        {sortColumn === "weight" ? (
-          sortDirection === "+" ? (
-            <Icon icon="caret-down" />
-          ) : (
-            <Icon icon="caret-up" />
-          )
-        ) : null}
-        Weight
-      </Cell>
-      <Cell onClick={() => onClick("currentPrice")}>
-        {sortColumn === "currentPrice" ? (
-          sortDirection === "+" ? (
-            <Icon icon="caret-down" />
-          ) : (
-            <Icon icon="caret-up" />
-          )
-        ) : null}
-        Price
-      </Cell>
-      <Cell onClick={() => onClick("ratingAverage")}>
-        {sortColumn === "ratingAverage" ? (
-          sortDirection === "+" ? (
-            <Icon icon="caret-down" />
-          ) : (
-            <Icon icon="caret-up" />
-          )
-        ) : null}
-        Rating
-      </Cell>
+      <Cell prop="name" label="Name" {...props} />
     </>
   );
 };
 
-const PartSpecHead = ({ sortDirection, sortColumn, onClick }) => {
+const PartMetaHead = (props) => {
+  return (
+    <>
+      <Cell prop="weight" label="Weight" {...props} />
+      <Cell prop="ratingAverage" label="Rating" {...props} />
+      <Cell prop="currentPrice" label="Price" {...props} />
+    </>
+  );
+};
+
+const PartSpecHead = (props) => {
   const { partType } = useParams();
 
   switch (partType) {
-    case partTypes.motor:
+    case "motor": {
+      const config = partTypes[partType];
       return (
         <>
-          <Cell onClick={() => onClick("kv")}>KV</Cell>
-          <Cell onClick={() => onClick("motorDiameter")}>Motor Diameter</Cell>
-          <Cell onClick={() => onClick("motorHeight")}>Motor Height</Cell>
-          <Cell onClick={() => onClick("shaftDiameter")}>Shaft Diameter</Cell>
-          <Cell onClick={() => onClick("motorMountWidth")}>
-            Motor Mount Width
-          </Cell>
-          <Cell onClick={() => onClick("motorMountLength")}>
-            Motor Mount Length
-          </Cell>
+          <Cell prop={config.kv.prop} label={config.kv.label} {...props} />
+          <Cell
+            prop={config.motorDiameter.prop}
+            label={config.motorDiameter.label}
+            {...props}
+          />
+          <Cell
+            prop={config.motorHeight.prop}
+            label={config.motorHeight.label}
+            {...props}
+          />
+          <Cell
+            prop={config.shaftDiameter.prop}
+            label={config.shaftDiameter.label}
+            {...props}
+          />
+          <Cell
+            prop={config.motorMountWidth.prop}
+            label={config.motorMountWidth.label}
+            {...props}
+          />
+          <Cell
+            prop={config.motorMountLength.prop}
+            label={config.motorMountLength.label}
+            {...props}
+          />
         </>
       );
-    case partTypes.frame:
+    }
+
+    case "frame":
       // TODO: Add cells
       return null;
-    case partTypes.battery:
+    case "battery":
       // TODO: Add cells
       return null;
-    case partTypes.radioReceiver:
+    case "radio-receiver":
       // TODO: Add cells
       return null;
-    case partTypes.videoCamera:
+    case "video-camera":
       // TODO: Add cells
       return null;
-    case partTypes.videoAntenna:
+    case "video-antenna":
       // TODO: Add cells
       return null;
-    case partTypes.videoTransmitter:
+    case "video-transmitter":
       // TODO: Add cells
       return null;
-    case partTypes.flightController:
+    case "flight-controller":
       // TODO: Add cells
       return null;
-    case partTypes.electronicSpeedController:
+    case "electronic-speed-controller":
       // TODO: Add cells
       return null;
     default:
       return null;
   }
 };
-
-const Row = styled.tr``;
-
-const Cell = styled.td``;
 
 export default PartHead;
