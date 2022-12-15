@@ -2,12 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 export const Icon = ({ icon, ...props }) => (
-  <Container {...props}>
-    <FontAwesomeIcon icon={icon} />
-  </Container>
+  <Container icon={icon} {...props} />
 );
 
-const Container = styled.div`
+const Container = styled(FontAwesomeIcon)`
   margin-right: ${({ mr }) => mr};
   margin-left: ${({ ml }) => ml};
   color: ${({ color }) => color};

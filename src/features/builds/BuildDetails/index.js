@@ -1,11 +1,18 @@
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
-import useAuth from "../../auth/useAuth";
+// API
 import { useGetBuildQuery } from "../buildsApiSlice";
-import { setActiveBuildId } from "../activeBuildIdSlice";
+import { useUpdateUserMutation } from "../../user/userApiSlice";
 
+// Components
 import BuildParts from "./BuildParts";
+
+// Hooks
+import useAuth from "../../../hooks/useAuth";
+
+// State
+import { setActiveBuildId } from "../activeBuildIdSlice";
 
 const PartDetails = () => {
   const dispatch = useDispatch();
@@ -17,14 +24,18 @@ const PartDetails = () => {
 
   const { data: build, isLoading } = useGetBuildQuery(buildId);
 
+  const [updateUser] = useUpdateUserMutation();
+
   const renderEditButton = (build) => {
     if (user?.id === build.user.id) {
-      const onClick = () => {
-        dispatch(setActiveBuildId(build.id));
+      const onClick = async () => {
+        const data = { activeBuildId: build.id };
+        await updateUser({ userId: user.id, data });
+        dispatch(setActiveBuildId(buildId));
         navigate(`/builds/edit/${build.id}`);
       };
 
-      return <button onClick={onClick}>edit</button>;
+      return <button onClick={onClick}>Edit</button>;
     }
   };
 

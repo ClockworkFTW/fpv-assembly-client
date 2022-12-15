@@ -2,8 +2,11 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 
-import useAuth from "./useAuth";
+// API
 import { useSignUpMutation } from "./authApiSlice";
+
+// Hooks
+import useAuth from "../../hooks/useAuth";
 
 const initialValues = {
   username: "",

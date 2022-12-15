@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+
 import { apiSlice } from "./api/apiSlice";
+
 import authReducer from "../features/auth/authSlice";
 import activeBuildIdReducer from "../features/builds/activeBuildIdSlice";
 

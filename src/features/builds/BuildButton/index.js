@@ -1,11 +1,17 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import useAuth from "../../auth/useAuth";
+// API
 import { useCreateBuildMutation } from "../buildsApiSlice";
+
+// Hooks
+import useAuth from "../../../hooks/useAuth";
+
+// Redux
 import { setActiveBuildId } from "../activeBuildIdSlice";
 
-const CreateBuildButton = () => {
+const BuildButton = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,9 +22,7 @@ const CreateBuildButton = () => {
   const onCreateBuildClicked = async () => {
     try {
       const result = await createBuild();
-
       const buildId = result.data.build.id;
-
       dispatch(setActiveBuildId(buildId));
       navigate(`/builds/edit/${buildId}`);
     } catch (error) {
@@ -27,10 +31,12 @@ const CreateBuildButton = () => {
   };
 
   return user ? (
-    <button disabled={isLoading} onClick={onCreateBuildClicked}>
-      Create Build
-    </button>
+    <Button disabled={isLoading} onClick={onCreateBuildClicked}>
+      +
+    </Button>
   ) : null;
 };
 
-export default CreateBuildButton;
+const Button = styled.button``;
+
+export default BuildButton;

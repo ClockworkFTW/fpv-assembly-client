@@ -86,7 +86,6 @@ const reset = css`
 
 const main = css`
   body {
-    background-color: silver;
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
       segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
       arial, sans-serif;
@@ -99,6 +98,11 @@ const main = css`
   ul {
     padding: 0;
     list-style: none;
+  }
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 `;
 

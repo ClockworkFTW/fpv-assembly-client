@@ -39,10 +39,10 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Build", id: "LIST" }],
     }),
     updateBuild: builder.mutation({
-      query: ({ build, buildId }) => ({
+      query: ({ buildId, data }) => ({
         url: `/builds/${buildId}`,
         method: "PATCH",
-        body: build,
+        body: data,
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Build", id: arg.id }],
     }),

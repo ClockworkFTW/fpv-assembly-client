@@ -10,12 +10,12 @@ import PartEditor from "./pages/PartEditor";
 import BuildsList from "./pages/BuildsList";
 import BuildDetails from "./pages/BuildDetails";
 import BuildEditor from "./pages/BuildEditor";
+import NotFound from "./pages/NotFound";
 
 // Components
 import Layout from "./components/Layout";
 import RequireAuth from "./features/auth/RequireAuth";
 import InitializeAuth from "./features/auth/InitializeAuth";
-import InitializeActiveBuild from "./features/builds/InitializeActiveBuild";
 
 // Config
 import { userRoles } from "./config";
@@ -29,22 +29,21 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />
-          <Route element={<InitializeActiveBuild />}>
-            <Route path="parts">
-              <Route path=":partType" element={<PartsList />} />
-              <Route path=":partType/:partId" element={<PartDetails />} />
-              <Route element={<RequireAuth roles={[admin]} />}>
-                <Route path="edit/:partId" element={<PartEditor />} />
-              </Route>
-            </Route>
-            <Route path="builds">
-              <Route index element={<BuildsList />} />
-              <Route path=":buildId" element={<BuildDetails />} />
-              <Route element={<RequireAuth roles={[user, admin]} />}>
-                <Route path="edit/:buildId" element={<BuildEditor />} />
-              </Route>
+          <Route path="parts">
+            <Route path=":partType" element={<PartsList />} />
+            <Route path=":partType/:partId" element={<PartDetails />} />
+            <Route element={<RequireAuth roles={[admin]} />}>
+              <Route path="edit/:partId" element={<PartEditor />} />
             </Route>
           </Route>
+          <Route path="builds">
+            <Route index element={<BuildsList />} />
+            <Route path=":buildId" element={<BuildDetails />} />
+            <Route element={<RequireAuth roles={[user, admin]} />}>
+              <Route path="edit/:buildId" element={<BuildEditor />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
     </Routes>

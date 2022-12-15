@@ -4,12 +4,16 @@ import styled from "styled-components";
 
 // API
 import { useGetPartsQuery } from "../partsApiSlice";
+import { useCreateBuildPartMutation } from "../../builds/buildsApiSlice";
 
 // Config
 import { partTypes } from "../../../config";
 
 // Components
 import Rating from "../../../components/Rating";
+
+// Hooks
+import useActiveBuildId from "../../../hooks/useActiveBuildId";
 
 const PartRow = ({ partId }) => {
   const { partType } = useParams();
@@ -31,7 +35,7 @@ const PartRow = ({ partId }) => {
     <Row>
       <PartNameRow partMeta={partMeta} />
       <PartSpecRow partSpec={partSpec} />
-      <PartMetaRow partMeta={partMeta} />
+      <PartMetaRow partMeta={partMeta} partId={partId} />
     </Row>
   );
 };
@@ -49,9 +53,13 @@ const PartNameRow = ({ partMeta }) => (
   </>
 );
 
-const PartMetaRow = ({ partMeta }) => {
+const PartMetaRow = ({ partMeta, partId }) => {
   const { partType } = useParams();
   const config = partTypes[partType];
+
+  const buildId = useActiveBuildId();
+
+  const [createBuildPart] = useCreateBuildPartMutation();
 
   return (
     <>
@@ -66,7 +74,12 @@ const PartMetaRow = ({ partMeta }) => {
       </Cell>
       <Cell>
         {config.currentPrice.unit}
-        {partMeta.currentPrice}
+        {partMeta.currentPrice}{" "}
+        {buildId && (
+          <button onClick={() => createBuildPart({ buildId, partId })}>
+            add
+          </button>
+        )}
       </Cell>
     </>
   );

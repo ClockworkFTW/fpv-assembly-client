@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useGetPartsQuery } from "../features/parts/partsApiSlice";
 
 // Components
+import BuildStats from "../features/builds/BuildStats";
 import PartsFilter from "../features/parts/PartsFilter";
 import PartsBreadcrumbs from "../features/parts/PartsBreadcrumbs";
 import PartsList from "../features/parts/PartsList";
@@ -16,30 +17,26 @@ const PartsListPage = () => {
 
   const partsQuery = `type=${partType}&${searchParams.toString()}`;
 
-  const { data, isLoading, isError, error } = useGetPartsQuery(partsQuery, {
+  const { data } = useGetPartsQuery(partsQuery, {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
 
   return data ? (
-    <Wrapper>
-      <Container>
+    <Container>
+      <div>
+        <BuildStats />
         <PartsFilter filter={data.filter} />
-        <div>
-          <PartsBreadcrumbs filter={data.filter} />
-          <PartsList parts={data.parts} />
-          <PartsPagination pagination={data.pagination} />
-        </div>
-      </Container>
-    </Wrapper>
+      </div>
+      <div>
+        <PartsBreadcrumbs filter={data.filter} />
+        <PartsList parts={data.parts} />
+        <PartsPagination pagination={data.pagination} />
+      </div>
+    </Container>
   ) : null;
 };
-
-const Wrapper = styled.div`
-  max-width: 2000px;
-  margin: 0 auto;
-`;
 
 const Container = styled.div`
   display: grid;

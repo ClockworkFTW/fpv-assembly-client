@@ -93,7 +93,7 @@ export const partTypes = {
   "video-antenna": {
     ...partMeta,
   },
-  " video-transmitter": {
+  "video-transmitter": {
     ...partMeta,
   },
   "flight-controller": {
