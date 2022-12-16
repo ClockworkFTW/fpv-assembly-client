@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // API
@@ -13,13 +13,11 @@ import useAuth from "../hooks/useAuth";
 
 const Header = () => {
   const user = useAuth();
-  const navigate = useNavigate();
 
   const [signOut] = useSignOutMutation();
 
   const onSignOutClicked = async () => {
     await signOut();
-    navigate("/");
     window.location.reload(false);
   };
 

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { far } from "@fortawesome/pro-regular-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 
 import App from "./App";
 import GlobalStyle from "./style/global";
@@ -13,7 +14,7 @@ import GlobalStyle from "./style/global";
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-library.add(far, fas);
+library.add(far, fas, fab);
 
 root.render(
   <StrictMode>

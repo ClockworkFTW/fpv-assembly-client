@@ -2,12 +2,14 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 import Header from "./Header";
+import Notification from "./Notification";
 import Footer from "./Footer";
 
 const Layout = () => {
   return (
     <>
       <Header />
+      <Notification />
       <Wrapper>
         <Container>
           <Outlet />

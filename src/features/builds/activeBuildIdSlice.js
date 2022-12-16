@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = null;
 
-const activeBuildId = createSlice({
+const activeBuildIdSlice = createSlice({
   name: "activeBuildId",
   initialState,
-  reducers: { setActiveBuildId: (state, action) => action.payload },
+  reducers: {
+    setActiveBuildId: (state, action) => action.payload,
+  },
 });
 
-export const { setActiveBuildId } = activeBuildId.actions;
+export const { setActiveBuildId } = activeBuildIdSlice.actions;
 
-export default activeBuildId.reducer;
+export default activeBuildIdSlice.reducer;

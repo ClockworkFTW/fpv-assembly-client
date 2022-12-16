@@ -1,5 +1,7 @@
 import { apiSlice } from "../../app/api/apiSlice";
+
 import { setCredentials } from "./authSlice";
+import { setNotification } from "../notifications/notificationSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +16,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
         } catch (error) {
-          console.log(error); // TODO: Remove in prod
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
         }
       },
     }),
@@ -28,8 +33,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
-        } catch (error) {
-          console.log(error); // TODO: Remove in prod
+        } catch ({ error }) {
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
         }
       },
     }),
@@ -44,7 +52,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
           dispatch(setCredentials(null));
           dispatch(apiSlice.util.resetApiState());
         } catch (error) {
-          console.log(error); // TODO: Remove in prod
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
         }
       },
     }),
@@ -57,9 +68,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
-        } catch (error) {
-          console.log(error); // TODO: Remove in prod
-        }
+        } catch (error) {}
       },
     }),
   }),
