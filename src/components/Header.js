@@ -1,21 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import useAuth from "../hooks/useAuth";
 import { useSignOutMutation } from "../features/auth/authApiSlice";
 
 // Components
 import PartsMenu from "../features/parts/PartsMenu";
 import BuildButton from "../features/builds/BuildButton";
 
+// Hooks
+import useAuth from "../hooks/useAuth";
+
 const Header = () => {
   const user = useAuth();
+  const navigate = useNavigate();
 
   const [signOut] = useSignOutMutation();
 
   const onSignOutClicked = async () => {
     await signOut();
+    navigate("/");
+    window.location.reload(false);
   };
 
   return (
