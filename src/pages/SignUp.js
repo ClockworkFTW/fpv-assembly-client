@@ -14,7 +14,11 @@ import useAuth from "hooks/useAuth";
 const SignUpPage = () => {
   const user = useAuth();
 
-  const [signUp, { isLoading }] = useSignUpMutation();
+  const [signUp, { isLoading, isSuccess }] = useSignUpMutation();
+
+  if (isSuccess) {
+    return <Navigate to="/auth/verification" />;
+  }
 
   return user ? (
     <Navigate to="/" />
@@ -24,7 +28,7 @@ const SignUpPage = () => {
       <SignUpForm signUp={signUp} isLoading={isLoading} />
       <SSO />
       <Redirect>
-        Already have an account? Sign in <Link to="/sign-in">here</Link>.
+        Already have an account? Sign in <Link to="/auth/sign-in">here</Link>.
       </Redirect>
     </Container>
   );

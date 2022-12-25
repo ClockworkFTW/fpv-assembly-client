@@ -15,7 +15,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
-        } catch (error) {
+        } catch ({ error }) {
           setNotification(dispatch, {
             type: "error",
             message: error.data.message,
@@ -51,7 +51,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           await queryFulfilled;
           dispatch(setCredentials(null));
           dispatch(apiSlice.util.resetApiState());
-        } catch (error) {
+        } catch ({ error }) {
           setNotification(dispatch, {
             type: "error",
             message: error.data.message,
@@ -68,7 +68,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(setCredentials(result.data.token));
-        } catch (error) {}
+        } catch ({ error }) {}
       },
     }),
   }),

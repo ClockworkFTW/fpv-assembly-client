@@ -24,7 +24,7 @@ const SignInPage = () => {
       <SignInForm signIn={signIn} isLoading={isLoading} />
       <SSO />
       <Redirect>
-        Don't have an account yet? Sign up <Link to="/sign-up">here</Link>.
+        Don't have an account yet? Sign up <Link to="/auth/sign-up">here</Link>.
       </Redirect>
     </Container>
   );

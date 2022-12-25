@@ -7,6 +7,7 @@ import { useSignOutMutation } from "features/auth/authApiSlice";
 // Components
 import PartsMenu from "features/parts/PartsMenu";
 import BuildButton from "features/builds/BuildButton";
+import Tooltip from "components/Tooltip";
 
 // Hooks
 import useAuth from "hooks/useAuth";
@@ -32,14 +33,21 @@ const Header = () => {
         <div>
           {user ? (
             <>
-              <BuildButton />
+              {user.isVerified ? (
+                <BuildButton />
+              ) : (
+                <Tooltip
+                  id="email-verification"
+                  content="Your email has not yet been verified"
+                />
+              )}
               <Link to={`/profile/${user.id}`}>{user.username}</Link>
               <button onClick={onSignOutClicked}>Sign Out</button>
             </>
           ) : (
             <>
-              <Link to="/sign-in">Sign In</Link>
-              <Link to="/sign-up">Sign Up</Link>
+              <Link to="/auth/sign-in">Sign In</Link>
+              <Link to="/auth/sign-up">Sign Up</Link>
             </>
           )}
         </div>

@@ -5,7 +5,7 @@ import Icon from "components/Icon";
 
 const Tooltip = ({ id, content }) => (
   <>
-    <Icon id={id} icon={["fas", "circle-question"]} color="silver" size="lg" />
+    <Icon id={id} icon={["fas", "circle-question"]} size="lg" />
     <ReactTooltip
       anchorId={id}
       content={content}

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "pages/Home";
 import SignIn from "pages/SignIn";
 import SignUp from "pages/SignUp";
+import Verification from "pages/Verification";
 import PartsList from "pages/PartsList";
 import PartDetails from "pages/PartDetails";
 import PartEditor from "pages/PartEditor";
@@ -27,8 +28,11 @@ const App = () => {
       <Route element={<InitializeAuth />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="sign-in" element={<SignIn />} />
-          <Route path="sign-up" element={<SignUp />} />
+          <Route path="auth">
+            <Route path="sign-in" element={<SignIn />} />
+            <Route path="sign-up" element={<SignUp />} />
+            <Route path="verification" element={<Verification />} />
+          </Route>
           <Route path="parts">
             <Route path=":partType" element={<PartsList />} />
             <Route path=":partType/:partId" element={<PartDetails />} />
