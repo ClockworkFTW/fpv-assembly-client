@@ -15,7 +15,7 @@ import Rating from "../../../components/Rating";
 // Hooks
 import useActiveBuildId from "../../../hooks/useActiveBuildId";
 
-const PartRow = ({ partId }) => {
+const PartsTableRow = ({ partId }) => {
   const { partType } = useParams();
   const [searchParams] = useSearchParams();
 
@@ -174,4 +174,4 @@ const Image = styled.img`
   object-fit: contain;
 `;
 
-export default memo(PartRow);
+export default memo(PartsTableRow);

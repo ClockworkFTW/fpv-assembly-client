@@ -1,28 +1,24 @@
 import styled from "styled-components";
 
-import PartHead from "./PartHead";
-import PartRow from "./PartRow";
+import PartsTableHeader from "./PartsTableHeader";
+import PartsTableRow from "./PartsTableRow";
 
 const PartsList = ({ parts }) => (
-  <Table>
-    <TableHead>
-      <PartHead />
-    </TableHead>
-    <TableBody>
+  <PartsTable>
+    <PartsTableHeader />
+    <PartsTableBody>
       {parts.ids.map((partId) => (
-        <PartRow key={partId} partId={partId} />
+        <PartsTableRow key={partId} partId={partId} />
       ))}
-    </TableBody>
-  </Table>
+    </PartsTableBody>
+  </PartsTable>
 );
 
-const Table = styled.table`
+const PartsTable = styled.table`
   width: 100%;
   border-collapse: collapse;
 `;
 
-const TableHead = styled.thead``;
-
-const TableBody = styled.tbody``;
+const PartsTableBody = styled.tbody``;
 
 export default PartsList;

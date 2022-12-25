@@ -7,7 +7,7 @@ import { partTypes } from "../../../config";
 // Components
 import Icon from "../../../components/Icon";
 
-const PartHead = () => {
+const PartsTableHeader = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const sort = searchParams.get("sort");
@@ -29,63 +29,26 @@ const PartHead = () => {
   };
 
   return (
-    <tr>
-      <PartNameHead
-        sortDirection={sortDirection}
-        sortColumn={sortColumn}
-        setSortProp={setSortProp}
-      />
-      <PartSpecHead
-        sortDirection={sortDirection}
-        sortColumn={sortColumn}
-        setSortProp={setSortProp}
-      />
-      <PartMetaHead
-        sortDirection={sortDirection}
-        sortColumn={sortColumn}
-        setSortProp={setSortProp}
-      />
-    </tr>
+    <thead>
+      <tr>
+        <PartNameHead
+          sortDirection={sortDirection}
+          sortColumn={sortColumn}
+          setSortProp={setSortProp}
+        />
+        <PartSpecHead
+          sortDirection={sortDirection}
+          sortColumn={sortColumn}
+          setSortProp={setSortProp}
+        />
+        <PartMetaHead
+          sortDirection={sortDirection}
+          sortColumn={sortColumn}
+          setSortProp={setSortProp}
+        />
+      </tr>
+    </thead>
   );
-};
-
-const Wrapper = styled.td`
-  padding: 4px 8px;
-  border-bottom: 1px solid grey;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 700;
-`;
-
-const Cell = ({ prop, label, sortDirection, sortColumn, setSortProp }) => (
-  <Wrapper onClick={() => setSortProp(prop)}>
-    <Content>
-      <SortIcon
-        prop={prop}
-        sortColumn={sortColumn}
-        sortDirection={sortDirection}
-      />
-      {label}
-    </Content>
-  </Wrapper>
-);
-
-const SortIcon = ({ prop, sortColumn, sortDirection }) => {
-  if (sortColumn === prop) {
-    if (sortDirection === "+") {
-      return <Icon icon={["far", "caret-down"]} mr="6px" />;
-    }
-    if (sortDirection === "-") {
-      return <Icon icon={["far", "caret-up"]} mr="6px" />;
-    }
-  }
 };
 
 const PartNameHead = (props) => {
@@ -173,4 +136,44 @@ const PartSpecHead = (props) => {
   }
 };
 
-export default PartHead;
+const Cell = ({ prop, label, sortDirection, sortColumn, setSortProp }) => (
+  <Wrapper onClick={() => setSortProp(prop)}>
+    <Content>
+      <SortIcon
+        prop={prop}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+      />
+      {label}
+    </Content>
+  </Wrapper>
+);
+
+const SortIcon = ({ prop, sortColumn, sortDirection }) => {
+  if (sortColumn === prop) {
+    if (sortDirection === "+") {
+      return <Icon icon={["far", "caret-down"]} mr="6px" />;
+    }
+    if (sortDirection === "-") {
+      return <Icon icon={["far", "caret-up"]} mr="6px" />;
+    }
+  }
+};
+
+const Wrapper = styled.th`
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid grey;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+`;
+
+export default PartsTableHeader;

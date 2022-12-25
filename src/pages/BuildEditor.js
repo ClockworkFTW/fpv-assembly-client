@@ -1,3 +1,4 @@
+import { createContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -10,6 +11,10 @@ import {
 
 // Components
 import BuildParts from "../features/builds/BuildParts";
+import BuildImages from "../features/builds/BuildImages";
+
+// Context
+export const BuildIdContext = createContext(null);
 
 const BuildEditor = () => {
   const navigate = useNavigate();
@@ -32,11 +37,12 @@ const BuildEditor = () => {
   };
 
   return build ? (
-    <>
+    <BuildIdContext.Provider value={buildId}>
       <button onClick={onPublishBuild}>Publish</button>
       <button onClick={onDeleteBuild}>Delete</button>
-      <BuildParts buildId={build.id} parts={build.parts} />
-    </>
+      <BuildParts parts={build.parts} />
+      <BuildImages images={build.images} />
+    </BuildIdContext.Provider>
   ) : null;
 };
 

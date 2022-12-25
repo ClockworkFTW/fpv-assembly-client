@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { partTypes } from "../../../config";
 
 // Components
+import BuildTableHeader from "./BuildTableHeader";
 import BuildTableGroup from "./BuildTableGroup";
+import BuildTableFooter from "./BuildTableFooter";
 
 const BuildParts = ({ buildId, parts }) => {
   const sortedParts = parts.slice();
@@ -12,16 +14,8 @@ const BuildParts = ({ buildId, parts }) => {
 
   return (
     <BuildTable>
-      <TableHead>
-        <Row>
-          <Cell>Part</Cell>
-          <Cell>Name</Cell>
-          <Cell>Weight</Cell>
-          <Cell>Rating</Cell>
-          <Cell>Cost</Cell>
-        </Row>
-      </TableHead>
-      <TableBody>
+      <BuildTableHeader />
+      <BuildTableBody>
         {Object.entries(partTypes).map(([key]) => {
           const groupedParts = parts.filter((part) => part.type === key);
           groupedParts.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -34,7 +28,8 @@ const BuildParts = ({ buildId, parts }) => {
             />
           );
         })}
-      </TableBody>
+      </BuildTableBody>
+      <BuildTableFooter parts={parts} />
     </BuildTable>
   );
 };
@@ -44,16 +39,6 @@ const BuildTable = styled.table`
   border-collapse: collapse;
 `;
 
-const TableBody = styled.tbody``;
-
-const TableHead = styled.thead``;
-
-const Row = styled.tr``;
-
-const Cell = styled.th`
-  text-align: left;
-  padding: 4px 8px;
-  border-bottom: 1px solid grey;
-`;
+const BuildTableBody = styled.tbody``;
 
 export default BuildParts;

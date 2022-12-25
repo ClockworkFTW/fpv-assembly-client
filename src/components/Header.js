@@ -58,7 +58,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 96%;
+  max-width: 90%;
   margin: 0 auto;
   padding: 10px 0;
 `;

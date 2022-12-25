@@ -7,6 +7,9 @@ import {
   useDeleteBuildPartMutation,
 } from "../buildsApiSlice";
 
+// Components
+import Rating from "../../../components/Rating";
+
 // Utilities
 import { partTypeToName } from "../../../util";
 
@@ -78,11 +81,12 @@ const BuildTableGroup = ({ buildId, partType, parts }) => {
               <Name to={`/parts/${partType}/${part.id}`}>{part.name}</Name>
             </Group>
           </Cell>
-          <Cell>{part.weight}g</Cell>
           <Cell>
-            {part.ratingAverage}
-            {part.ratingCount}
+            <Group>
+              <Rating rating={part.ratingAverage} /> ({part.ratingCount})
+            </Group>
           </Cell>
+          <Cell>{part.weight}g</Cell>
           <Cell>
             ${part.currentPrice}{" "}
             <button

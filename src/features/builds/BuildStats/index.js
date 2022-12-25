@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import CountUp from "react-countup";
 import styled from "styled-components";
 
 // API
 import { useGetBuildQuery } from "../buildsApiSlice";
 
+// Components
+import Counter from "../../../components/Counter";
+
 // Hooks
 import useActiveBuildId from "../../../hooks/useActiveBuildId";
-import usePrevious from "../../../hooks/usePrevious";
 
 const BuildStats = () => {
   const buildId = useActiveBuildId();
@@ -24,22 +25,17 @@ const BuildStats = () => {
     <Link to={`/builds/edit/${build.id}`}>
       <Container>
         <li>
-          Parts: <Total value={count} />
+          Parts: <Counter value={count} />
         </li>
         <li>
-          Total: $<Total value={price} />
+          Total: $<Counter value={price} />
         </li>
         <li>
-          Weight: <Total value={weight} />g
+          Weight: <Counter value={weight} />g
         </li>
       </Container>
     </Link>
   );
-};
-
-const Total = ({ value }) => {
-  const start = usePrevious(value);
-  return <CountUp start={start || 0} end={value} />;
 };
 
 const Container = styled.ul`

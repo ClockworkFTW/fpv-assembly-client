@@ -1,6 +1,8 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
+import { setNotification } from "../notifications/notificationSlice";
+
 const buildsAdapter = createEntityAdapter({
   sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
 });
@@ -81,6 +83,65 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+    uploadBuildImages: builder.mutation({
+      query: ({ buildId, formData }) => ({
+        url: `/builds/${buildId}/images`,
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch ({ error }) {
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
+        }
+      },
+    }),
+    reorderBuildImages: builder.mutation({
+      query: ({ buildId, images }) => ({
+        url: `/builds/${buildId}/images`,
+        method: "PATCH",
+        body: { images },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch ({ error }) {
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
+        }
+      },
+    }),
+    deleteBuildImage: builder.mutation({
+      query: ({ buildId, imageId }) => ({
+        url: `/builds/${buildId}/images/${imageId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch ({ error }) {
+          setNotification(dispatch, {
+            type: "error",
+            message: error.data.message,
+          });
+        }
+      },
+    }),
   }),
 });
 
@@ -93,4 +154,7 @@ export const {
   useCreateBuildPartMutation,
   useUpdateBuildPartMutation,
   useDeleteBuildPartMutation,
+  useUploadBuildImagesMutation,
+  useReorderBuildImagesMutation,
+  useDeleteBuildImageMutation,
 } = partsApiSlice;
