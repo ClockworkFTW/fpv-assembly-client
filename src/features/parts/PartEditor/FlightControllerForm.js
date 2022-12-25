@@ -1,7 +1,9 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import MetaDataForm, { metaDataValidationSchema } from "./MetaDataForm";
+import MetaDataForm, {
+  metaDataValidationSchema,
+} from "features/parts/PartEditor/MetaDataForm";
 
 const FlightControllerForm = ({ part, partType, handleOnSubmit }) => {
   const initialValues = {

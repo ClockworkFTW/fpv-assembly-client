@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 // Components
-import Counter from "../../../components/Counter";
+import Counter from "components/Counter";
 
 const BuildTableFooter = ({ parts }) => {
   const price = parts.reduce((t, p) => t + p.price * p.quantity, 0);

@@ -3,17 +3,17 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useGetPartsQuery } from "../partsApiSlice";
-import { useCreateBuildPartMutation } from "../../builds/buildsApiSlice";
+import { useGetPartsQuery } from "features/parts/partsApiSlice";
+import { useCreateBuildPartMutation } from "features/builds/buildsApiSlice";
 
 // Config
-import { partTypes } from "../../../config";
+import { partTypes } from "config";
 
 // Components
-import Rating from "../../../components/Rating";
+import Rating from "components/Rating";
 
 // Hooks
-import useActiveBuildId from "../../../hooks/useActiveBuildId";
+import useActiveBuildId from "hooks/useActiveBuildId";
 
 const PartsTableRow = ({ partId }) => {
   const { partType } = useParams();

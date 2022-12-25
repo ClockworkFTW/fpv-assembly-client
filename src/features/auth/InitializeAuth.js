@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
-import { selectCurrentToken } from "./authSlice";
-import { useRefreshAccessTokenMutation } from "./authApiSlice";
+import { selectCurrentToken } from "features/auth/authSlice";
+import { useRefreshAccessTokenMutation } from "features/auth/authApiSlice";
 
 const InitializeAuth = () => {
   const effectRan = useRef(false);

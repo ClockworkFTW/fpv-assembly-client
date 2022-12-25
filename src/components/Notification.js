@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 // Components
-import Icon from "./Icon";
+import Icon from "components/Icon";
 
 const Notification = () => {
   const { notification } = useSelector((state) => state);

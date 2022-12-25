@@ -1,4 +1,5 @@
-import PartEditor from "../features/parts/PartEditor";
+// Components
+import PartEditor from "features/parts/PartEditor";
 
 const PartEditorPage = () => (
   <div>

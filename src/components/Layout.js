@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-import Header from "./Header";
-import Notification from "./Notification";
-import Footer from "./Footer";
+import Header from "components/Header";
+import Notification from "components/Notification";
+import Footer from "components/Footer";
 
 const Layout = () => {
   return (

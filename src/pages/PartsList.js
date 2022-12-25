@@ -2,14 +2,14 @@ import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useGetPartsQuery } from "../features/parts/partsApiSlice";
+import { useGetPartsQuery } from "features/parts/partsApiSlice";
 
 // Components
-import BuildStats from "../features/builds/BuildStats";
-import PartsFilter from "../features/parts/PartsFilter";
-import PartsBreadcrumbs from "../features/parts/PartsBreadcrumbs";
-import PartsList from "../features/parts/PartsList";
-import PartsPagination from "../features/parts/PartsPagination";
+import BuildStats from "features/builds/BuildStats";
+import PartsFilter from "features/parts/PartsFilter";
+import PartsBreadcrumbs from "features/parts/PartsBreadcrumbs";
+import PartsList from "features/parts/PartsList";
+import PartsPagination from "features/parts/PartsPagination";
 
 const PartsListPage = () => {
   const { partType } = useParams();

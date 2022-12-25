@@ -4,12 +4,12 @@ import * as Yup from "yup";
 import MetaDataForm, {
   metaDataInitialValues,
   metaDataValidationSchema,
-} from "./MetaDataForm";
+} from "features/parts/PartEditor/MetaDataForm";
 
 import ListingsForm, {
   listingsInitialValues,
   listingsValidationSchema,
-} from "./ListingsForm";
+} from "features/parts/PartEditor/ListingsForm";
 
 const specDataValidationSchema = Yup.object({
   kv: Yup.number().positive("Must be positive").required("Required"),

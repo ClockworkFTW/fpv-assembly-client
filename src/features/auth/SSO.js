@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 // Components
-import Icon from "../../components/Icon";
+import Icon from "components/Icon";
 
 const SSO = () => (
   <List>

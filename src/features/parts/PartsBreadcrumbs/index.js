@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 // Config
-import { partTypes } from "../../../config";
+import { partTypes } from "config";
 
 const PartsBreadcrumbs = ({ filter }) => {
   const { partType } = useParams();

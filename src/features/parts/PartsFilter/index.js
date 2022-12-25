@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 
 // Config
-import { partMeta, partTypes } from "../../../config";
+import { partMeta, partTypes } from "config";
 
 // Components
-import TagsFilter from "./TagsFilter";
-import RangeFilter from "./RangeFilter";
+import TagsFilter from "features/parts/PartsFilter/TagsFilter";
+import RangeFilter from "features/parts/PartsFilter/RangeFilter";
 
 const PartsFilter = ({ filter }) => (
   <div>

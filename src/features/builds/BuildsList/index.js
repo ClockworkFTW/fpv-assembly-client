@@ -1,6 +1,8 @@
-import { useGetBuildsQuery } from "../buildsApiSlice";
+// API
+import { useGetBuildsQuery } from "features/builds/buildsApiSlice";
 
-import Build from "./Build";
+// Components
+import Build from "features/builds/BuildsList/Build";
 
 const BuildsList = () => {
   const {

@@ -1,17 +1,16 @@
 import { createContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 
 // API
 import {
   useGetBuildQuery,
   useUpdateBuildMutation,
   useDeleteBuildMutation,
-} from "../features/builds/buildsApiSlice";
+} from "features/builds/buildsApiSlice";
 
 // Components
-import BuildParts from "../features/builds/BuildParts";
-import BuildImages from "../features/builds/BuildImages";
+import BuildParts from "features/builds/BuildParts";
+import BuildImages from "features/builds/BuildImages";
 
 // Context
 export const BuildIdContext = createContext(null);

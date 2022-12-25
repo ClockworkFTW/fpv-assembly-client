@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { sleep } from "../../util";
+import { sleep } from "util";
 
 const initialState = null;
 

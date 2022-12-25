@@ -1,26 +1,31 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { partTypes } from "../../../config";
-import { partTypeToName } from "../../../util";
-
+// API
 import {
   useGetPartQuery,
   useCreatePartMutation,
   useUpdatePartMutation,
   useDeletePartMutation,
-} from "../partsApiSlice";
+} from "features/parts/partsApiSlice";
 
-import MotorForm from "./MotorForm";
-import FrameForm from "./FrameForm";
-import BatteryForm from "./BatteryForm";
-import PropellerForm from "./PropellerForm";
-import RadioReceiverForm from "./RadioReceiverForm";
-import VideoCameraForm from "./VideoCameraForm";
-import VideoAntennaForm from "./VideoAntennaForm";
-import VideoTransmitterForm from "./VideoTransmitterForm";
-import FlightControllerForm from "./FlightControllerForm";
-import ElectronicSpeedControllerForm from "./ElectronicSpeedControllerForm";
+// Components
+import MotorForm from "features/parts/PartEditor/MotorForm";
+import FrameForm from "features/parts/PartEditor/FrameForm";
+import BatteryForm from "features/parts/PartEditor/BatteryForm";
+import PropellerForm from "features/parts/PartEditor/PropellerForm";
+import RadioReceiverForm from "features/parts/PartEditor/RadioReceiverForm";
+import VideoCameraForm from "features/parts/PartEditor/VideoCameraForm";
+import VideoAntennaForm from "features/parts/PartEditor/VideoAntennaForm";
+import VideoTransmitterForm from "features/parts/PartEditor/VideoTransmitterForm";
+import FlightControllerForm from "features/parts/PartEditor/FlightControllerForm";
+import ElectronicSpeedControllerForm from "features/parts/PartEditor/ElectronicSpeedControllerForm";
+
+// Config
+import { partTypes } from "config";
+
+// Utilities
+import { partTypeToName } from "util";
 
 const PartEditor = () => {
   const navigate = useNavigate();

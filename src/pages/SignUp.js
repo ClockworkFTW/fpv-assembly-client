@@ -2,14 +2,14 @@ import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useSignUpMutation } from "../features/auth/authApiSlice";
+import { useSignUpMutation } from "features/auth/authApiSlice";
 
 // Components
-import SignUpForm from "../features/auth/SignUpForm";
-import SSO from "../features/auth/SSO";
+import SignUpForm from "features/auth/SignUpForm";
+import SSO from "features/auth/SSO";
 
 // Hooks
-import useAuth from "../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const SignUpPage = () => {
   const user = useAuth();

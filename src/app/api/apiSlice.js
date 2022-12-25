@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCredentials } from "../../features/auth/authSlice";
+
+import { setCredentials } from "features/auth/authSlice";
 
 const BASE_URL = "https://jnb-api.ngrok.io/api";
 

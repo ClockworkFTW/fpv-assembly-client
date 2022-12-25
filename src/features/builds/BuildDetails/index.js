@@ -2,17 +2,17 @@ import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 // API
-import { useGetBuildQuery } from "../buildsApiSlice";
-import { useUpdateUserMutation } from "../../user/userApiSlice";
+import { useGetBuildQuery } from "features/builds/buildsApiSlice";
+import { useUpdateUserMutation } from "features/user/userApiSlice";
 
 // Components
-import BuildParts from "./BuildParts";
+import BuildParts from "features/builds/BuildParts";
 
 // Hooks
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 // State
-import { setActiveBuildId } from "../activeBuildIdSlice";
+import { setActiveBuildId } from "features/builds/activeBuildIdSlice";
 
 const PartDetails = () => {
   const dispatch = useDispatch();

@@ -5,13 +5,13 @@ import styled from "styled-components";
 import {
   useUpdateBuildPartMutation,
   useDeleteBuildPartMutation,
-} from "../buildsApiSlice";
+} from "features/builds/buildsApiSlice";
 
 // Components
-import Rating from "../../../components/Rating";
+import Rating from "components/Rating";
 
 // Utilities
-import { partTypeToName } from "../../../util";
+import { partTypeToName } from "util";
 
 const BuildTableGroup = ({ buildId, partType, parts }) => {
   const [updateBuildPart, { isLoading: isUpdateLoading }] =

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-import PartsTableHeader from "./PartsTableHeader";
-import PartsTableRow from "./PartsTableRow";
+// Components
+import PartsTableHeader from "features/parts/PartsList/PartsTableHeader";
+import PartsTableRow from "features/parts/PartsList/PartsTableRow";
 
 const PartsList = ({ parts }) => (
   <PartsTable>

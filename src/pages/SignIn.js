@@ -2,14 +2,14 @@ import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useSignInMutation } from "../features/auth/authApiSlice";
+import { useSignInMutation } from "features/auth/authApiSlice";
 
 // Components
-import SignInForm from "../features/auth/SignInForm";
-import SSO from "../features/auth/SSO";
+import SignInForm from "features/auth/SignInForm";
+import SSO from "features/auth/SSO";
 
 // Hooks
-import useAuth from "../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const SignInPage = () => {
   const user = useAuth();

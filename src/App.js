@@ -1,24 +1,24 @@
 import { Routes, Route } from "react-router-dom";
 
 // Pages
-import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import PartsList from "./pages/PartsList";
-import PartDetails from "./pages/PartDetails";
-import PartEditor from "./pages/PartEditor";
-import BuildsList from "./pages/BuildsList";
-import BuildDetails from "./pages/BuildDetails";
-import BuildEditor from "./pages/BuildEditor";
-import NotFound from "./pages/NotFound";
+import Home from "pages/Home";
+import SignIn from "pages/SignIn";
+import SignUp from "pages/SignUp";
+import PartsList from "pages/PartsList";
+import PartDetails from "pages/PartDetails";
+import PartEditor from "pages/PartEditor";
+import BuildsList from "pages/BuildsList";
+import BuildDetails from "pages/BuildDetails";
+import BuildEditor from "pages/BuildEditor";
+import NotFound from "pages/NotFound";
 
 // Components
-import Layout from "./components/Layout";
-import RequireAuth from "./features/auth/RequireAuth";
-import InitializeAuth from "./features/auth/InitializeAuth";
+import Layout from "components/Layout";
+import RequireAuth from "features/auth/RequireAuth";
+import InitializeAuth from "features/auth/InitializeAuth";
 
 // Config
-import { userRoles } from "./config";
+import { userRoles } from "config";
 const { user, admin } = userRoles;
 
 const App = () => {

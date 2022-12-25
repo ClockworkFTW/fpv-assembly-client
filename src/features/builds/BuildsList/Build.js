@@ -1,7 +1,8 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 
-import { useGetBuildsQuery } from "../buildsApiSlice";
+// API
+import { useGetBuildsQuery } from "features/builds/buildsApiSlice";
 
 const Build = ({ buildId }) => {
   const { build } = useGetBuildsQuery(undefined, {

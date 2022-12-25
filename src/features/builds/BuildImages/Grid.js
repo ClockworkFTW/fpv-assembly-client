@@ -8,13 +8,13 @@ import styled from "styled-components";
 import {
   useReorderBuildImagesMutation,
   useDeleteBuildImageMutation,
-} from "../buildsApiSlice";
+} from "features/builds/buildsApiSlice";
 
 // Components
-import Image from "./Item";
+import Item from "features/builds/BuildImages/Item";
 
 // Context
-import { BuildIdContext } from "../../../pages/BuildEditor";
+import { BuildIdContext } from "pages/BuildEditor";
 
 const Grid = ({ images }) => {
   const [items, setItems] = useState([]);
@@ -84,7 +84,7 @@ const Items = ({ items, setItems }) => {
   return (
     <Container ref={drop}>
       {items.map((item) => (
-        <Image
+        <Item
           key={item.id}
           {...item}
           findItem={findItem}

@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 // Config
-import { partTypes } from "../../../config";
+import { partTypes } from "config";
 
 // Components
-import Icon from "../../../components/Icon";
+import Icon from "components/Icon";
 
 // Utilities
-import { partTypeToName } from "../../../util";
+import { partTypeToName } from "util";
 
 const PartsMenu = () => {
   const navigate = useNavigate();

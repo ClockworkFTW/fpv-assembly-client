@@ -1,4 +1,5 @@
-import PartDetails from "../features/parts/PartDetails";
+// Components
+import PartDetails from "features/parts/PartDetails";
 
 const PartDetailsPage = () => (
   <div>

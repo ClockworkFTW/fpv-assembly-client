@@ -1,4 +1,5 @@
-import BuildsList from "../features/builds/BuildsList";
+// Components
+import BuildsList from "features/builds/BuildsList";
 
 const BuildsListPage = () => (
   <div>

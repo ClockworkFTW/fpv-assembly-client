@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 // Config
-import { partTypes } from "../../../config";
+import { partTypes } from "config";
 
 // Components
-import BuildTableHeader from "./BuildTableHeader";
-import BuildTableGroup from "./BuildTableGroup";
-import BuildTableFooter from "./BuildTableFooter";
+import BuildTableHeader from "features/builds/BuildParts/BuildTableHeader";
+import BuildTableGroup from "features/builds/BuildParts/BuildTableGroup";
+import BuildTableFooter from "features/builds/BuildParts/BuildTableFooter";
 
 const BuildParts = ({ buildId, parts }) => {
   const sortedParts = parts.slice();

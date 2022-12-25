@@ -1,16 +1,16 @@
 import { useParams, useNavigate } from "react-router-dom";
 
 // API
-import { useGetPartQuery } from "../partsApiSlice";
+import { useGetPartQuery } from "features/parts/partsApiSlice";
 
 // Components
-import PriceChart from "./PriceChart";
+import PriceChart from "features/parts/PartDetails/PriceChart";
 
 // Config
-import { partTypes, userRoles } from "../../../config";
+import { partTypes, userRoles } from "config";
 
 // Hooks
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const PartDetails = () => {
   const user = useAuth();

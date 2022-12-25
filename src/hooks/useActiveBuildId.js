@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import useAuth from "./useAuth";
+import useAuth from "hooks/useAuth";
 
 const useActiveBuildId = () => {
   const user = useAuth();

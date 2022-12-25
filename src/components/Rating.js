@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 // Components
-import Icon from "./Icon";
+import Icon from "components/Icon";
 
 const Rating = ({ rating }) => (
   <Container>

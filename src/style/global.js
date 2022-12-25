@@ -1,5 +1,17 @@
 import { createGlobalStyle, css } from "styled-components";
 
+// Style dependencies
+import "react-tooltip/dist/react-tooltip.css";
+import "rc-slider/assets/index.css";
+
+// Font Awesome
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { far } from "@fortawesome/pro-regular-svg-icons";
+import { fas } from "@fortawesome/pro-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+
+library.add(far, fas, fab);
+
 /*
   Author: Josh Comeau    
   Source: https://www.joshwcomeau.com/css/custom-css-reset/

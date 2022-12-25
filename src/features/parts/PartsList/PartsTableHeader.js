@@ -2,10 +2,10 @@ import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 // Config
-import { partTypes } from "../../../config";
+import { partTypes } from "config";
 
 // Components
-import Icon from "../../../components/Icon";
+import Icon from "components/Icon";
 
 const PartsTableHeader = () => {
   const [searchParams, setSearchParams] = useSearchParams();

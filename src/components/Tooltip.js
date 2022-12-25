@@ -1,8 +1,7 @@
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 
 // Components
-import Icon from "./Icon";
+import Icon from "components/Icon";
 
 const Tooltip = ({ id, content }) => (
   <>

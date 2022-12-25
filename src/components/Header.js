@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useSignOutMutation } from "../features/auth/authApiSlice";
+import { useSignOutMutation } from "features/auth/authApiSlice";
 
 // Components
-import PartsMenu from "../features/parts/PartsMenu";
-import BuildButton from "../features/builds/BuildButton";
+import PartsMenu from "features/parts/PartsMenu";
+import BuildButton from "features/builds/BuildButton";
 
 // Hooks
-import useAuth from "../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const Header = () => {
   const user = useAuth();

@@ -1,7 +1,7 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
-import { setCredentials } from "./authSlice";
-import { setNotification } from "../notifications/notificationSlice";
+import { setCredentials } from "features/auth/authSlice";
+import { setNotification } from "features/notifications/notificationSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

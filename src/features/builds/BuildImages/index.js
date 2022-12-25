@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 // Components
-import Tooltip from "../../../components/Tooltip";
-import Upload from "./Upload";
-import Grid from "./Grid";
+import Tooltip from "components/Tooltip";
+import Upload from "features/builds/BuildImages/Upload";
+import Grid from "features/builds/BuildImages/Grid";
 
 const BuildImages = ({ images }) => (
   <Container>

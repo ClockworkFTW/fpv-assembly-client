@@ -2,10 +2,10 @@ import { useContext } from "react";
 import styled from "styled-components";
 
 // API
-import { useUploadBuildImagesMutation } from "../buildsApiSlice";
+import { useUploadBuildImagesMutation } from "features/builds/buildsApiSlice";
 
 // Context
-import { BuildIdContext } from "../../../pages/BuildEditor";
+import { BuildIdContext } from "pages/BuildEditor";
 
 const Upload = () => {
   const buildId = useContext(BuildIdContext);

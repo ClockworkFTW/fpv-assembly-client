@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 // API
-import { useCreateBuildMutation } from "../buildsApiSlice";
+import { useCreateBuildMutation } from "features/builds/buildsApiSlice";
 
 // Hooks
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 // Redux
-import { setActiveBuildId } from "../activeBuildIdSlice";
+import { setActiveBuildId } from "features/builds/activeBuildIdSlice";
 
 const BuildButton = () => {
   const dispatch = useDispatch();
