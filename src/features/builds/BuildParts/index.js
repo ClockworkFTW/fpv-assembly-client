@@ -8,7 +8,7 @@ import BuildTableHeader from "features/builds/BuildParts/BuildTableHeader";
 import BuildTableGroup from "features/builds/BuildParts/BuildTableGroup";
 import BuildTableFooter from "features/builds/BuildParts/BuildTableFooter";
 
-const BuildParts = ({ buildId, parts }) => {
+const BuildParts = ({ parts }) => {
   const sortedParts = parts.slice();
   sortedParts.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -20,12 +20,7 @@ const BuildParts = ({ buildId, parts }) => {
           const groupedParts = parts.filter((part) => part.type === key);
           groupedParts.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
           return (
-            <BuildTableGroup
-              key={key}
-              buildId={buildId}
-              partType={key}
-              parts={groupedParts}
-            />
+            <BuildTableGroup key={key} partType={key} parts={groupedParts} />
           );
         })}
       </BuildTableBody>

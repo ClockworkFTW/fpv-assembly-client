@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -10,10 +11,15 @@ import {
 // Components
 import Rating from "components/Rating";
 
+// Context
+import { BuildIdContext } from "pages/BuildEditor";
+
 // Utilities
 import { partTypeToName } from "util";
 
-const BuildTableGroup = ({ buildId, partType, parts }) => {
+const BuildTableGroup = ({ partType, parts }) => {
+  const buildId = useContext(BuildIdContext);
+
   const [updateBuildPart, { isLoading: isUpdateLoading }] =
     useUpdateBuildPartMutation();
   const [deleteBuildPart, { isLoading: isDeleteLoading }] =
