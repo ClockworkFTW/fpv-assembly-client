@@ -2,8 +2,11 @@ import { memo } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import styled from "styled-components";
 
+// Components
+import Image from "components/Image";
+
 const Item = memo((props) => {
-  const { id, index, url } = props;
+  const { id, index, url, scrollPosition } = props;
   const { findItem, moveItem, deleteItem, reorderItems } = props;
 
   const originalIndex = findItem(id).index;
@@ -42,11 +45,11 @@ const Item = memo((props) => {
 
   return (
     <Container
-      url={url}
+      ref={(node) => drag(drop(node))}
       opacity={isDragging ? 0 : 1}
       onClick={() => deleteItem(id)}
-      ref={(node) => drag(drop(node))}
     >
+      <Image alt={id} url={url} scrollPosition={scrollPosition} />
       <Order>{index + 1}</Order>
     </Container>
   );
@@ -57,9 +60,8 @@ const Container = styled.div`
   width: 100%;
   aspect-ratio: 1/1;
   border-radius: 4px;
-  background-size: cover;
-  background-position: center;
-  background-image: ${({ url }) => `url(${url})`};
+  overflow: hidden;
+  background-color: silver;
   opacity: ${({ opacity }) => opacity};
   transform: translate(0, 0);
   :hover {

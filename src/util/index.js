@@ -1,3 +1,4 @@
+import { cloneElement, isValidElement } from "react";
 import pluralize from "pluralize";
 
 export const partTypeToName = (partType, makePlural) => {
@@ -14,4 +15,20 @@ export const partTypeToName = (partType, makePlural) => {
 
 export const sleep = (delay) => {
   return new Promise((resolve) => setTimeout(resolve, delay));
+};
+
+const addPropsToReactElement = (element, props) => {
+  if (isValidElement(element)) {
+    return cloneElement(element, props);
+  }
+  return element;
+};
+
+export const addPropsToChildren = (children, props) => {
+  if (!Array.isArray(children)) {
+    return addPropsToReactElement(children, props);
+  }
+  return children.map((childElement, i) =>
+    addPropsToReactElement(childElement, { ...props, key: i })
+  );
 };

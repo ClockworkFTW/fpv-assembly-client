@@ -11,6 +11,7 @@ import {
 // Components
 import BuildParts from "features/builds/BuildParts";
 import BuildImages from "features/builds/BuildImages";
+import BuildLog from "features/builds/BuildLog";
 
 // Context
 export const BuildIdContext = createContext(null);
@@ -41,6 +42,7 @@ const BuildEditor = () => {
       <button onClick={onDeleteBuild}>Delete</button>
       <BuildParts parts={build.parts} />
       <BuildImages images={build.images} />
+      <BuildLog log={build.log} images={build.images} />
     </BuildIdContext.Provider>
   ) : null;
 };

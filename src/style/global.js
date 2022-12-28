@@ -1,6 +1,7 @@
 import { createGlobalStyle, css } from "styled-components";
 
 // Style dependencies
+import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-tooltip/dist/react-tooltip.css";
 import "rc-slider/assets/index.css";
 
@@ -97,6 +98,11 @@ const reset = css`
 `;
 
 const main = css`
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
   body {
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
       segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
@@ -105,16 +111,6 @@ const main = css`
   a {
     text-decoration: none;
     color: black;
-  }
-  ol,
-  ul {
-    padding: 0;
-    list-style: none;
-  }
-  #root {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
 `;
 
