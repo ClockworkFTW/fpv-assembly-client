@@ -1,7 +1,8 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
-import { apiSlice } from "app/api/apiSlice";
+import { apiSlice, axiosQuery } from "app/api/apiSlice";
 
 import { setNotification } from "features/notifications/notificationSlice";
+import { setUploadProgress } from "features/builds/uploadProgressSlice";
 
 const buildsAdapter = createEntityAdapter({
   sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
@@ -84,24 +85,30 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
     uploadBuildImages: builder.mutation({
-      query: ({ buildId, formData }) => ({
-        url: `/builds/${buildId}/images`,
-        method: "POST",
-        body: formData,
-      }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Build", id: arg.buildId },
-      ],
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      queryFn: async ({ buildId, formData }, { dispatch, getState }) => {
         try {
-          await queryFulfilled;
-        } catch ({ error }) {
+          await axiosQuery(getState, dispatch, {
+            method: "post",
+            data: formData,
+            url: `/builds/${buildId}/images`,
+            headers: { "Content-Type": "multipart/form-data" },
+            onUploadProgress: ({ progress }) => {
+              dispatch(setUploadProgress(progress));
+            },
+          });
+          return { data: null };
+        } catch (error) {
           setNotification(dispatch, {
             type: "error",
             message: error.data.message,
           });
+        } finally {
+          dispatch(setUploadProgress(null));
         }
       },
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
     }),
     reorderBuildImages: builder.mutation({
       query: ({ buildId, images }) => ({

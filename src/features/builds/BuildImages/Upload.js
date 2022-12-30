@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 // API
@@ -14,7 +15,6 @@ const Upload = () => {
 
   const onChange = (event) => {
     const formData = new FormData();
-
     formData.append("fileCount", event.target.files.length);
 
     Array.from(event.target.files).forEach((file) => {
@@ -24,10 +24,13 @@ const Upload = () => {
     uploadBuildImages({ buildId, formData });
   };
 
+  const { uploadProgress } = useSelector((state) => state);
+
   return (
     <Container>
       <Button htmlFor="build-image-file-input">
-        {isLoading ? "Loading..." : "Upload Images"}
+        {uploadProgress && <Progress width={uploadProgress} />}
+        <Text>{isLoading ? "Loading..." : "Upload Images"}</Text>
       </Button>
       <Input
         id="build-image-file-input"
@@ -42,13 +45,29 @@ const Upload = () => {
 const Container = styled.div``;
 
 const Button = styled.label`
+  position: relative;
   display: inline-block;
-  padding: 8px 16px;
+
+  overflow: hidden;
   border-radius: 4px;
   background-color: silver;
   :hover {
     cursor: pointer;
   }
+`;
+
+const Text = styled.div`
+  position: relative;
+  padding: 8px 16px;
+`;
+
+const Progress = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: grey;
+  width: ${({ width }) => `${width * 100}%`};
 `;
 
 const Input = styled.input`
