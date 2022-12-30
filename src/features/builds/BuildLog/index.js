@@ -1,9 +1,14 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Editable, Slate } from "slate-react";
 import { withReact } from "slate-react";
 import { createEditor } from "slate";
 import { withHistory } from "slate-history";
+import debounce from "lodash.debounce";
 import isHotkey from "is-hotkey";
+import dayjs from "dayjs";
+
+// API
+import { useUpdateBuildMutation } from "../buildsApiSlice";
 
 // Components
 import Modal, { ModalButton } from "features/builds/BuildLog/Modal";
@@ -13,6 +18,9 @@ import { VideoElement, VideoModal } from "features/builds/BuildLog/Video";
 
 // Config
 import { HOTKEYS } from "config/slate";
+
+// Context
+import { BuildIdContext } from "pages/BuildEditor";
 
 // Other
 import { toggleMark } from "features/builds/BuildLog/Text";
@@ -31,14 +39,9 @@ const withEmbeds = (editor) => {
   return editor;
 };
 
-const initialValue = [
-  {
-    type: "paragraph",
-    children: [{ text: "" }],
-  },
-];
-
 const BuildLog = ({ log, images }) => {
+  const buildId = useContext(BuildIdContext);
+
   const editor = useMemo(
     () => withEmbeds(withHistory(withReact(createEditor()))),
     []
@@ -46,8 +49,6 @@ const BuildLog = ({ log, images }) => {
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-
-  const [modal, setModal] = useState(null);
 
   const listenForHotkey = (event) => {
     for (const hotkey in HOTKEYS) {
@@ -59,8 +60,31 @@ const BuildLog = ({ log, images }) => {
     }
   };
 
+  const [updateBuildLog, { isLoading, isSuccess }] = useUpdateBuildMutation();
+  const [updatedAt, setUpdatedAt] = useState(null);
+
+  const onChange = (log) => {
+    updateBuildLog({ buildId, data: { log } });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setUpdatedAt(dayjs().format("h:mm A"));
+    }
+  }, [isSuccess]);
+
+  const debouncedOnChange = useMemo(() => debounce(onChange, 5000), []);
+
+  useEffect(() => {
+    return () => {
+      debouncedOnChange.cancel();
+    };
+  }, [debouncedOnChange]);
+
+  const [modal, setModal] = useState(null);
+
   return (
-    <Slate editor={editor} value={log || initialValue}>
+    <Slate editor={editor} value={log} onChange={debouncedOnChange}>
       <div>
         <MarkButton format="bold" icon="bold" />
         <MarkButton format="italic" icon="italic" />
@@ -88,6 +112,7 @@ const BuildLog = ({ log, images }) => {
           renderLeaf={renderLeaf}
         />
       </div>
+      {isLoading ? "Saving..." : updatedAt ? `Autosaved at ${updatedAt}` : null}
       <Modal modal={modal} closeModal={() => setModal(null)}>
         <ImageModal images={images} />
         <VideoModal />

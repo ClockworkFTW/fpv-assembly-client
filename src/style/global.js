@@ -108,6 +108,11 @@ const main = css`
       segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
       arial, sans-serif;
   }
+  ul,
+  ol {
+    padding: 0;
+    list-style: none;
+  }
   a {
     text-decoration: none;
     color: black;
