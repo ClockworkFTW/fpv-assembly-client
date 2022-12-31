@@ -26,12 +26,9 @@ const isBlockActive = (editor, format, blockType = "type") => {
   return !!match;
 };
 
-const toggleBlock = (editor, format) => {
-  const isActive = isBlockActive(
-    editor,
-    format,
-    TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-  );
+const toggleBlock = (editor, format) => () => {
+  const blockType = TEXT_ALIGN_TYPES.includes(format) ? "align" : "type";
+  const isActive = isBlockActive(editor, format, blockType);
   const isList = LIST_TYPES.includes(format);
 
   Transforms.unwrapNodes(editor, {
@@ -65,18 +62,11 @@ const toggleBlock = (editor, format) => {
 
 export const BlockButton = ({ format, icon }) => {
   const editor = useSlate();
+  const blockType = TEXT_ALIGN_TYPES.includes(format) ? "align" : "type";
+  const isActive = isBlockActive(editor, format, blockType);
+
   return (
-    <Button
-      isActive={isBlockActive(
-        editor,
-        format,
-        TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-      )}
-      onMouseDown={(event) => {
-        event.preventDefault();
-        toggleBlock(editor, format);
-      }}
-    >
+    <Button isActive={isActive} onMouseDown={toggleBlock(editor, format)}>
       <Icon icon={["fas", icon]} />
     </Button>
   );
@@ -84,10 +74,11 @@ export const BlockButton = ({ format, icon }) => {
 
 const isMarkActive = (editor, format) => {
   const marks = Editor.marks(editor);
+
   return marks ? marks[format] === true : false;
 };
 
-export const toggleMark = (editor, format) => {
+export const toggleMark = (editor, format) => () => {
   const isActive = isMarkActive(editor, format);
 
   if (isActive) {
@@ -99,14 +90,10 @@ export const toggleMark = (editor, format) => {
 
 export const MarkButton = ({ format, icon }) => {
   const editor = useSlate();
+  const isActive = isMarkActive(editor, format);
+
   return (
-    <Button
-      isActive={isMarkActive(editor, format)}
-      onMouseDown={(event) => {
-        event.preventDefault();
-        toggleMark(editor, format);
-      }}
-    >
+    <Button isActive={isActive} onMouseDown={toggleMark(editor, format)}>
       <Icon icon={["fas", icon]} />
     </Button>
   );

@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { trackWindowScroll } from "react-lazy-load-image-component";
 import update from "immutability-helper";
 import styled from "styled-components";
 
@@ -31,7 +30,7 @@ const Grid = ({ images }) => {
   );
 };
 
-const Items = trackWindowScroll(({ items, setItems, scrollPosition }) => {
+const Items = ({ items, setItems, scrollPosition }) => {
   const buildId = useContext(BuildIdContext);
 
   const [reorderBuildImages, { isLoading: isReorderLoading }] =
@@ -98,7 +97,7 @@ const Items = trackWindowScroll(({ items, setItems, scrollPosition }) => {
       {isLoading && <Overlay />}
     </Container>
   );
-});
+};
 
 const Container = styled.div`
   position: relative;
