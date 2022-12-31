@@ -9,6 +9,7 @@ import {
 } from "features/builds/buildsApiSlice";
 
 // Components
+import BuildName from "features/builds/BuildName";
 import BuildParts from "features/builds/BuildParts";
 import BuildImages from "features/builds/BuildImages";
 import BuildLog from "features/builds/BuildLog";
@@ -38,8 +39,11 @@ const BuildEditor = () => {
 
   return build ? (
     <BuildIdContext.Provider value={buildId}>
-      <button onClick={onPublishBuild}>Publish</button>
-      <button onClick={onDeleteBuild}>Delete</button>
+      <div>
+        <button onClick={onPublishBuild}>Publish</button>
+        <button onClick={onDeleteBuild}>Delete</button>
+      </div>
+      <BuildName name={build.name} />
       <BuildParts parts={build.parts} />
       <BuildImages images={build.images} />
       <BuildLog log={build.log} images={build.images} />
