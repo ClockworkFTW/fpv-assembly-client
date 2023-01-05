@@ -84,6 +84,64 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+    createBuildComment: builder.mutation({
+      query: ({ buildId, message }) => ({
+        url: `/builds/${buildId}/comments`,
+        method: "POST",
+        body: { message },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
+    updateBuildComment: builder.mutation({
+      query: ({ buildId, commentId, message }) => ({
+        url: `/builds/${buildId}/comments/${commentId}`,
+        method: "PATCH",
+        body: { message },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
+    deleteBuildComment: builder.mutation({
+      query: ({ buildId, commentId }) => ({
+        url: `/builds/${buildId}/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
+    createBuildCommentVote: builder.mutation({
+      query: ({ buildId, commentId, vote }) => ({
+        url: `/builds/${buildId}/comments/${commentId}/vote`,
+        method: "POST",
+        body: { vote },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
+    updateBuildCommentVote: builder.mutation({
+      query: ({ buildId, commentId, vote }) => ({
+        url: `/builds/${buildId}/comments/${commentId}/vote`,
+        method: "PATCH",
+        body: { vote },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
+    deleteBuildCommentVote: builder.mutation({
+      query: ({ buildId, commentId }) => ({
+        url: `/builds/${buildId}/comments/${commentId}/vote`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Build", id: arg.buildId },
+      ],
+    }),
     uploadBuildImages: builder.mutation({
       queryFn: async ({ buildId, formData }, { dispatch, getState }) => {
         try {
@@ -161,6 +219,12 @@ export const {
   useCreateBuildPartMutation,
   useUpdateBuildPartMutation,
   useDeleteBuildPartMutation,
+  useCreateBuildCommentMutation,
+  useUpdateBuildCommentMutation,
+  useDeleteBuildCommentMutation,
+  useCreateBuildCommentVoteMutation,
+  useUpdateBuildCommentVoteMutation,
+  useDeleteBuildCommentVoteMutation,
   useUploadBuildImagesMutation,
   useReorderBuildImagesMutation,
   useDeleteBuildImageMutation,

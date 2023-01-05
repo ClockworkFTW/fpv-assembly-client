@@ -8,6 +8,7 @@ import { useSignOutMutation } from "features/auth/authApiSlice";
 import PartsMenu from "features/parts/PartsMenu";
 import BuildButton from "features/builds/BuildButton";
 import Tooltip from "components/Tooltip";
+import Avatar from "components/Avatar";
 
 // Hooks
 import useAuth from "hooks/useAuth";
@@ -33,6 +34,8 @@ const Header = () => {
         <div>
           {user ? (
             <>
+              <Avatar user={user} />
+              <Link to={`/profile/${user.id}`}>{user.username}</Link>
               {user.isVerified ? (
                 <BuildButton />
               ) : (
@@ -41,7 +44,6 @@ const Header = () => {
                   content="Your email has not yet been verified"
                 />
               )}
-              <Link to={`/profile/${user.id}`}>{user.username}</Link>
               <button onClick={onSignOutClicked}>Sign Out</button>
             </>
           ) : (

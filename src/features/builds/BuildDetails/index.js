@@ -1,56 +1,15 @@
-import { useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import BuildLog from "features/builds/BuildDetails/BuildLog";
+import CommentsList from "features/builds/BuildDetails/CommentsList";
+import ImageCarousel from "features/builds/BuildDetails/ImageCarousel";
+import Metadata from "features/builds/BuildDetails/Metadata";
+import PartsList from "features/builds/BuildDetails/PartsList";
 
-// API
-import { useGetBuildQuery } from "features/builds/buildsApiSlice";
-import { useUpdateUserMutation } from "features/user/userApiSlice";
-
-// Components
-import BuildParts from "features/builds/BuildParts";
-
-// Hooks
-import useAuth from "hooks/useAuth";
-
-// State
-import { setActiveBuildId } from "features/builds/activeBuildIdSlice";
-
-const PartDetails = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const user = useAuth();
-
-  const { buildId } = useParams();
-
-  const { data: build, isLoading } = useGetBuildQuery(buildId);
-
-  const [updateUser] = useUpdateUserMutation();
-
-  const renderEditButton = (build) => {
-    if (user?.id === build.user.id) {
-      const onClick = async () => {
-        const data = { activeBuildId: build.id };
-        await updateUser({ userId: user.id, data });
-        dispatch(setActiveBuildId(buildId));
-        navigate(`/builds/edit/${build.id}`);
-      };
-
-      return <button onClick={onClick}>Edit</button>;
-    }
-  };
-
-  return isLoading ? (
-    <p>Loading...</p>
-  ) : build ? (
-    <div>
-      {renderEditButton(build)}
-      <h1>{build.name}</h1>
-      <p>{build.markdown}</p>
-      <BuildParts parts={build.parts} />
-    </div>
-  ) : (
-    <p>Build not found...</p>
-  );
+const BuildDetails = {
+  BuildLog,
+  CommentsList,
+  ImageCarousel,
+  Metadata,
+  PartsList,
 };
 
-export default PartDetails;
+export default BuildDetails;

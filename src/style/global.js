@@ -4,6 +4,7 @@ import { createGlobalStyle, css } from "styled-components";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import "react-tooltip/dist/react-tooltip.css";
 import "rc-slider/assets/index.css";
+import "swiper/css";
 
 // Font Awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
