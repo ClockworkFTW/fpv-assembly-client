@@ -5,7 +5,7 @@ import CommentItem from "./CommentItem";
 // Styles
 import * as Styled from "./CommentsList.style";
 
-const CommentsList = ({ comments }) => (
+const CommentsList = ({ comments = [] }) => (
   <div>
     <h2>Leave a comment</h2>
     <CommentForm />

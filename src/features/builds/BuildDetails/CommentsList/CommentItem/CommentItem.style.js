@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CommentWrapper = styled.li`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const UserDetails = styled.div`
@@ -25,4 +25,10 @@ export const CommentMessage = styled.div`
 
 export const VoteButton = styled.button`
   color: ${({ color }) => color};
+`;
+
+export const CommentThread = styled.li`
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 1px solid silver;
 `;

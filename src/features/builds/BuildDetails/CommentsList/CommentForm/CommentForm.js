@@ -33,7 +33,7 @@ const CommentsList = ({ commentId, initialMessage, closeForm }) => {
       if (initialMessage) {
         await updateComment({ buildId, commentId, message });
       } else {
-        await createComment({ buildId, message });
+        await createComment({ buildId, parentId: commentId, message });
       }
       if (closeForm) {
         closeForm();
@@ -43,8 +43,11 @@ const CommentsList = ({ commentId, initialMessage, closeForm }) => {
     } catch {}
   };
 
-  const handleDeleteComment = () => {
-    deleteComment({ buildId, commentId });
+  const handleDeleteComment = async () => {
+    try {
+      await deleteComment({ buildId, commentId });
+      closeForm();
+    } catch {}
   };
 
   return (

@@ -85,10 +85,10 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
     createBuildComment: builder.mutation({
-      query: ({ buildId, message }) => ({
+      query: ({ buildId, parentId, message }) => ({
         url: `/builds/${buildId}/comments`,
         method: "POST",
-        body: { message },
+        body: { parentId, message },
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "Build", id: arg.buildId },
