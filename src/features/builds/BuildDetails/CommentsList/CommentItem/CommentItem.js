@@ -60,6 +60,15 @@ const CommentItem = ({ comment, depth = 0 }) => {
     0
   );
 
+  // Comment replies visibility state
+  const [repliesHidden, setRepliesHidden] = useState(depth > 2);
+
+  const toggleRepliesHidden = (e) => {
+    e.stopPropagation();
+    setRepliesHidden((repliesHidden) => !repliesHidden);
+  };
+
+  // Comment form visibility state
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
 
@@ -72,65 +81,70 @@ const CommentItem = ({ comment, depth = 0 }) => {
   };
 
   return (
-    <>
-      <Styled.CommentWrapper>
-        <Styled.UserDetails>
-          <Avatar user={comment.user} mr="10px" />
-          <div>
-            <Styled.Username>
-              {comment.user.username} {isBuildCreator && "(creator)"}
-            </Styled.Username>
-            <Styled.LastUpdate>
-              {lastUpdate} {wasEdited && "(edited)"}
-            </Styled.LastUpdate>
-          </div>
-        </Styled.UserDetails>
-        <Styled.CommentMessage>
-          <p>{comment.isDeleted ? "deleted" : comment.message}</p>
-        </Styled.CommentMessage>
-        {user && (
-          <div>
-            <Styled.VoteButton
-              color={
-                userVote ? (userVote.vote ? "blue" : "inherit") : "inherit"
-              }
-              onClick={handleVote(true)}
-            >
-              <Icon icon={["fas", "up"]} />
-            </Styled.VoteButton>
-            {voteCount}
-            <Styled.VoteButton
-              color={
-                userVote ? (userVote.vote ? "inherit" : "blue") : "inherit"
-              }
-              onClick={handleVote(false)}
-            >
-              <Icon icon={["fas", "down"]} />
-            </Styled.VoteButton>
-            {!isEditing && !isReplying && (
-              <>
-                <button onClick={onReplyClicked}>reply</button>
-                {isCommentPoster && (
-                  <button onClick={onEditClicked}>edit</button>
-                )}
-              </>
-            )}
-          </div>
-        )}
-        {(isEditing || isReplying) && (
-          <CommentForm
-            commentId={comment.id}
-            initialMessage={isEditing && comment.message}
-            closeForm={closeForm}
-          />
-        )}
-      </Styled.CommentWrapper>
-      {comment.children.map((child) => (
-        <Styled.CommentThread>
-          <CommentItem comment={child} depth={depth + 1} />
-        </Styled.CommentThread>
-      ))}
-    </>
+    <Styled.Wrapper>
+      <Styled.UserDetails>
+        <Avatar user={comment.user} mr="10px" />
+        <div>
+          <Styled.Username>
+            {comment.user.username} {isBuildCreator && "(creator)"}
+          </Styled.Username>
+          <Styled.LastUpdate>
+            {lastUpdate} {wasEdited && "(edited)"}
+          </Styled.LastUpdate>
+        </div>
+      </Styled.UserDetails>
+      {repliesHidden ? (
+        <Styled.MoreButton onClick={toggleRepliesHidden}>
+          View more replies...
+        </Styled.MoreButton>
+      ) : (
+        <Styled.Container>
+          <Styled.ThreadBar onClick={toggleRepliesHidden} />
+          <Styled.Message>
+            {comment.isDeleted ? "deleted" : comment.message}
+          </Styled.Message>
+          {user && (
+            <Styled.Toolbar>
+              <Styled.VoteButton
+                color={
+                  userVote ? (userVote.vote ? "blue" : "inherit") : "inherit"
+                }
+                onClick={handleVote(true)}
+              >
+                <Icon icon={["fas", "up"]} />
+              </Styled.VoteButton>
+              {voteCount}
+              <Styled.VoteButton
+                color={
+                  userVote ? (userVote.vote ? "inherit" : "blue") : "inherit"
+                }
+                onClick={handleVote(false)}
+              >
+                <Icon icon={["fas", "down"]} />
+              </Styled.VoteButton>
+              {!isEditing && !isReplying && (
+                <>
+                  <button onClick={onReplyClicked}>reply</button>
+                  {isCommentPoster && (
+                    <button onClick={onEditClicked}>edit</button>
+                  )}
+                </>
+              )}
+            </Styled.Toolbar>
+          )}
+          {(isEditing || isReplying) && (
+            <CommentForm
+              commentId={comment.id}
+              initialMessage={isEditing && comment.message}
+              closeForm={closeForm}
+            />
+          )}
+          {comment.children.map((child) => (
+            <CommentItem comment={child} depth={depth + 1} />
+          ))}
+        </Styled.Container>
+      )}
+    </Styled.Wrapper>
   );
 };
 

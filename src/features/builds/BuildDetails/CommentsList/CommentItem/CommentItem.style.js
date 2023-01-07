@@ -1,13 +1,40 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
-export const CommentWrapper = styled.li`
-  margin-bottom: 10px;
+export const Wrapper = styled.li`
+  margin: 10px 0;
 `;
 
 export const UserDetails = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
+  margin-bottom: 10px;
+`;
+
+export const MoreButton = styled.p`
+  :hover {
+    cursor: pointer;
+    color: blue;
+  }
+`;
+
+export const Container = styled.div`
+  position: relative;
+  margin-left: 14px;
+  padding-left: 26px;
+`;
+
+export const ThreadBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: silver;
+  :hover {
+    cursor: pointer;
+    background-color: blue;
+  }
 `;
 
 export const Username = styled.p`
@@ -19,16 +46,12 @@ export const LastUpdate = styled.p`
   font-size: 14px;
 `;
 
-export const CommentMessage = styled.div`
-  margin: 10px 0;
+export const Message = styled.p``;
+
+export const Toolbar = styled.div`
+  margin-top: 10px;
 `;
 
 export const VoteButton = styled.button`
   color: ${({ color }) => color};
-`;
-
-export const CommentThread = styled.li`
-  margin-left: 20px;
-  padding-left: 20px;
-  border-left: 1px solid silver;
 `;
