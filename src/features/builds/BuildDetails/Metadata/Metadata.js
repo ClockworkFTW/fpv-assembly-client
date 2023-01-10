@@ -1,10 +1,18 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
 // API
 import { useUpdateUserMutation } from "features/user/userApiSlice";
+import {
+  useCreateBuildLikeMutation,
+  useDeleteBuildLikeMutation,
+} from "features/builds/buildsApiSlice";
+
+// Components
+import Icon from "components/Icon";
 
 // Hooks
 import useAuth from "hooks/useAuth";
@@ -36,6 +44,39 @@ const Metadata = ({ build }) => {
     }
   };
 
+  const [createBuildLike, { isLoading: isCreateLikeLoading }] =
+    useCreateBuildLikeMutation();
+
+  const [deleteBuildLike, { isLoading: isDeleteLikeLoading }] =
+    useDeleteBuildLikeMutation();
+
+  const renderLikeButton = () => {
+    if (user) {
+      const hasLiked = build.likes.find((like) => like.userId === user.id);
+
+      const onClick = () => {
+        if (hasLiked) {
+          console.log(hasLiked);
+          deleteBuildLike({ buildId: build.id, likeId: hasLiked.id });
+        } else {
+          createBuildLike({
+            buildId: build.id,
+            likeId: uuidv4(),
+            userId: user.id,
+          });
+        }
+      };
+
+      const disabled = isCreateLikeLoading || isDeleteLikeLoading;
+
+      return (
+        <button disabled={disabled} onClick={onClick}>
+          <Icon icon={hasLiked ? ["fas", "heart"] : ["far", "heart"]} />
+        </button>
+      );
+    }
+  };
+
   return (
     <Styled.Container>
       <div>
@@ -46,7 +87,10 @@ const Metadata = ({ build }) => {
           {dayjs(build.createdAt).format("MMM D, YYYY")}
         </p>
       </div>
-      <div>{renderEditButton()}</div>
+      <div>
+        {renderEditButton()}
+        {renderLikeButton()}
+      </div>
     </Styled.Container>
   );
 };

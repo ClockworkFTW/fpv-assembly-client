@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 
-export const Wrapper = styled.li`
+export const Wrapper = styled.ul`
   margin: 10px 0;
 `;
 

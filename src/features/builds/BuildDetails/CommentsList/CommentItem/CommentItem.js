@@ -140,7 +140,7 @@ const CommentItem = ({ comment, depth = 0 }) => {
             />
           )}
           {comment.children.map((child) => (
-            <CommentItem comment={child} depth={depth + 1} />
+            <CommentItem key={child.id} comment={child} depth={depth + 1} />
           ))}
         </Styled.Container>
       )}

@@ -12,6 +12,8 @@ const initialState = buildsAdapter.getInitialState();
 
 export const partsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Builds
+
     getBuilds: builder.query({
       query: () => ({
         url: `/builds`,
@@ -25,6 +27,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         return [{ type: "Build", id: "LIST" }, ...tags];
       },
     }),
+
     getBuild: builder.query({
       query: (buildId) => ({
         url: `/builds/${buildId}`,
@@ -33,6 +36,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       transformResponse: ({ build }) => build,
       providesTags: (result, error, arg) => [{ type: "Build", id: arg }],
     }),
+
     createBuild: builder.mutation({
       query: (build) => ({
         url: `/builds`,
@@ -41,6 +45,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Build", id: "LIST" }],
     }),
+
     updateBuild: builder.mutation({
       query: ({ buildId, data }) => ({
         url: `/builds/${buildId}`,
@@ -49,6 +54,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Build", id: arg.id }],
     }),
+
     deleteBuild: builder.mutation({
       query: (buildId) => ({
         url: `/builds/${buildId}`,
@@ -56,6 +62,9 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Build", id: arg.id }],
     }),
+
+    // Build Parts
+
     createBuildPart: builder.mutation({
       query: ({ buildId, partId }) => ({
         url: `/builds/${buildId}/parts/${partId}`,
@@ -84,6 +93,9 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
+    // Build Comments
+
     createBuildComment: builder.mutation({
       query: ({ buildId, parentId, message }) => ({
         url: `/builds/${buildId}/comments`,
@@ -94,6 +106,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
     updateBuildComment: builder.mutation({
       query: ({ buildId, commentId, message }) => ({
         url: `/builds/${buildId}/comments/${commentId}`,
@@ -104,6 +117,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
     deleteBuildComment: builder.mutation({
       query: ({ buildId, commentId }) => ({
         url: `/builds/${buildId}/comments/${commentId}`,
@@ -113,6 +127,9 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
+    // Build Comment Votes
+
     createBuildCommentVote: builder.mutation({
       query: ({ buildId, commentId, vote }) => ({
         url: `/builds/${buildId}/comments/${commentId}/vote`,
@@ -123,6 +140,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
     updateBuildCommentVote: builder.mutation({
       query: ({ buildId, commentId, vote }) => ({
         url: `/builds/${buildId}/comments/${commentId}/vote`,
@@ -133,6 +151,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
     deleteBuildCommentVote: builder.mutation({
       query: ({ buildId, commentId }) => ({
         url: `/builds/${buildId}/comments/${commentId}/vote`,
@@ -142,6 +161,47 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
+    // Build Likes
+
+    createBuildLike: builder.mutation({
+      query: ({ buildId, likeId }) => ({
+        url: `/builds/${buildId}/likes`,
+        method: "POST",
+        body: { likeId },
+      }),
+      onQueryStarted(
+        { buildId, likeId, userId },
+        { dispatch, queryFulfilled }
+      ) {
+        const createBuildLikeResult = dispatch(
+          apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
+            const likes = [...build.likes, { id: likeId, userId }];
+            Object.assign(build, { likes });
+          })
+        );
+        queryFulfilled.catch(createBuildLikeResult.undo);
+      },
+    }),
+
+    deleteBuildLike: builder.mutation({
+      query: ({ buildId, likeId }) => ({
+        url: `/builds/${buildId}/likes/${likeId}`,
+        method: "DELETE",
+      }),
+      onQueryStarted({ buildId, likeId }, { dispatch, queryFulfilled }) {
+        const deleteBuildLikeResult = dispatch(
+          apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
+            const likes = build.likes.filter((like) => like.id !== likeId);
+            Object.assign(build, { likes });
+          })
+        );
+        queryFulfilled.catch(deleteBuildLikeResult.undo);
+      },
+    }),
+
+    // Build Images
+
     uploadBuildImages: builder.mutation({
       queryFn: async ({ buildId, formData }, { dispatch, getState }) => {
         try {
@@ -168,6 +228,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         { type: "Build", id: arg.buildId },
       ],
     }),
+
     reorderBuildImages: builder.mutation({
       query: ({ buildId, images }) => ({
         url: `/builds/${buildId}/images`,
@@ -188,6 +249,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+
     deleteBuildImage: builder.mutation({
       query: ({ buildId, imageId }) => ({
         url: `/builds/${buildId}/images/${imageId}`,
@@ -225,6 +287,8 @@ export const {
   useCreateBuildCommentVoteMutation,
   useUpdateBuildCommentVoteMutation,
   useDeleteBuildCommentVoteMutation,
+  useCreateBuildLikeMutation,
+  useDeleteBuildLikeMutation,
   useUploadBuildImagesMutation,
   useReorderBuildImagesMutation,
   useDeleteBuildImageMutation,
