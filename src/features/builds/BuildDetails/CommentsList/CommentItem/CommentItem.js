@@ -29,24 +29,74 @@ const CommentItem = ({ comment, depth = 0 }) => {
   const user = useAuth();
   const { buildId, creatorId } = useContext(BuildContext);
 
-  const [createCommentVote] = useCreateBuildCommentVoteMutation();
-  const [updateCommentVote] = useUpdateBuildCommentVoteMutation();
-  const [deleteCommentVote] = useDeleteBuildCommentVoteMutation();
+  const [createCommentVote, { isLoading: isCreateCommentVoteLoading }] =
+    useCreateBuildCommentVoteMutation();
 
-  const userVote =
-    user && comment.votes.find((vote) => vote.userId === user.id);
+  const [updateCommentVote, { isLoading: isUpdateCommentVoteLoading }] =
+    useUpdateBuildCommentVoteMutation();
 
-  const handleVote = (vote) => () => {
-    const commentId = comment.id;
-    if (userVote) {
-      if (vote === userVote.vote) {
-        deleteCommentVote({ buildId, commentId });
+  const [deleteCommentVote, { isLoading: isDeleteCommentVoteLoading }] =
+    useDeleteBuildCommentVoteMutation();
+
+  const renderVoteButtons = () => {
+    const userVote = comment.votes.find((vote) => vote.userId === user.id);
+
+    const handleVote = (vote) => () => {
+      const userId = user.id;
+      const commentId = comment.id;
+
+      if (userVote) {
+        if (vote === userVote.vote) {
+          deleteCommentVote({ buildId, commentId, userId });
+        } else {
+          updateCommentVote({ buildId, commentId, userId, vote });
+        }
       } else {
-        updateCommentVote({ buildId, commentId, vote });
+        createCommentVote({ buildId, commentId, userId, vote });
       }
-    } else {
-      createCommentVote({ buildId, commentId, vote });
-    }
+    };
+
+    const disabled =
+      isCreateCommentVoteLoading ||
+      isUpdateCommentVoteLoading ||
+      isDeleteCommentVoteLoading;
+
+    const upvoteColor = userVote
+      ? userVote.vote
+        ? "blue"
+        : "inherit"
+      : "inherit";
+
+    const downvoteColor = userVote
+      ? userVote.vote
+        ? "inherit"
+        : "blue"
+      : "inherit";
+
+    const voteCount = comment.votes.reduce(
+      (count, { vote }) => (vote ? count + 1 : count - 1),
+      0
+    );
+
+    return (
+      <>
+        <Styled.VoteButton
+          disabled={disabled}
+          color={upvoteColor}
+          onClick={handleVote(true)}
+        >
+          <Icon icon={["fas", "up"]} />
+        </Styled.VoteButton>
+        {voteCount}
+        <Styled.VoteButton
+          disabled={disabled}
+          color={downvoteColor}
+          onClick={handleVote(false)}
+        >
+          <Icon icon={["fas", "down"]} />
+        </Styled.VoteButton>
+      </>
+    );
   };
 
   const isBuildCreator = comment.user.id === creatorId;
@@ -54,11 +104,6 @@ const CommentItem = ({ comment, depth = 0 }) => {
 
   const wasEdited = comment.createdAt !== comment.updatedAt;
   const lastUpdate = dayjs(comment.updatedAt).fromNow();
-
-  const voteCount = comment.votes.reduce(
-    (count, { vote }) => (vote ? count + 1 : count - 1),
-    0
-  );
 
   // Comment replies visibility state
   const [repliesHidden, setRepliesHidden] = useState(depth > 2);
@@ -105,23 +150,7 @@ const CommentItem = ({ comment, depth = 0 }) => {
           </Styled.Message>
           {user && (
             <Styled.Toolbar>
-              <Styled.VoteButton
-                color={
-                  userVote ? (userVote.vote ? "blue" : "inherit") : "inherit"
-                }
-                onClick={handleVote(true)}
-              >
-                <Icon icon={["fas", "up"]} />
-              </Styled.VoteButton>
-              {voteCount}
-              <Styled.VoteButton
-                color={
-                  userVote ? (userVote.vote ? "inherit" : "blue") : "inherit"
-                }
-                onClick={handleVote(false)}
-              >
-                <Icon icon={["fas", "down"]} />
-              </Styled.VoteButton>
+              {renderVoteButtons()}
               {!isEditing && !isReplying && (
                 <>
                   <button onClick={onReplyClicked}>reply</button>

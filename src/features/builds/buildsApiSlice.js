@@ -136,9 +136,28 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { vote },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Build", id: arg.buildId },
-      ],
+      onQueryStarted(
+        { buildId, commentId, userId, vote },
+        { dispatch, queryFulfilled }
+      ) {
+        const createBuildCommentVoteResult = dispatch(
+          apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
+            const findCommentAndCreateVote = (comment) => {
+              if (comment.id === commentId) {
+                comment.votes = [...comment.votes, { userId, vote }];
+                return;
+              }
+              comment.children.forEach((child) =>
+                findCommentAndCreateVote(child)
+              );
+            };
+            build.comments.forEach((comment) =>
+              findCommentAndCreateVote(comment)
+            );
+          })
+        );
+        queryFulfilled.catch(createBuildCommentVoteResult.undo);
+      },
     }),
 
     updateBuildCommentVote: builder.mutation({
@@ -147,9 +166,34 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { vote },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Build", id: arg.buildId },
-      ],
+      onQueryStarted(
+        { buildId, commentId, userId },
+        { dispatch, queryFulfilled }
+      ) {
+        const updateBuildCommentVoteResult = dispatch(
+          apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
+            const findCommentAndUpdateVote = (comment) => {
+              if (comment.id === commentId) {
+                comment.votes = comment.votes.map((vote) => {
+                  if (vote.userId === userId) {
+                    return { userId, vote: !vote.vote };
+                  } else {
+                    return vote;
+                  }
+                });
+                return;
+              }
+              comment.children.forEach((child) =>
+                findCommentAndUpdateVote(child)
+              );
+            };
+            build.comments.forEach((comment) =>
+              findCommentAndUpdateVote(comment)
+            );
+          })
+        );
+        queryFulfilled.catch(updateBuildCommentVoteResult.undo);
+      },
     }),
 
     deleteBuildCommentVote: builder.mutation({
@@ -157,9 +201,30 @@ export const partsApiSlice = apiSlice.injectEndpoints({
         url: `/builds/${buildId}/comments/${commentId}/vote`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Build", id: arg.buildId },
-      ],
+      onQueryStarted(
+        { buildId, commentId, userId },
+        { dispatch, queryFulfilled }
+      ) {
+        const deleteBuildCommentVoteResult = dispatch(
+          apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
+            const findCommentAndDeleteVote = (comment) => {
+              if (comment.id === commentId) {
+                comment.votes = comment.votes.filter(
+                  (vote) => vote.userId !== userId
+                );
+                return;
+              }
+              comment.children.forEach((child) =>
+                findCommentAndDeleteVote(child)
+              );
+            };
+            build.comments.forEach((comment) =>
+              findCommentAndDeleteVote(comment)
+            );
+          })
+        );
+        queryFulfilled.catch(deleteBuildCommentVoteResult.undo);
+      },
     }),
 
     // Build Likes
@@ -176,8 +241,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       ) {
         const createBuildLikeResult = dispatch(
           apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
-            const likes = [...build.likes, { id: likeId, userId }];
-            Object.assign(build, { likes });
+            build.likes = [...build.likes, { id: likeId, userId }];
           })
         );
         queryFulfilled.catch(createBuildLikeResult.undo);
@@ -192,8 +256,7 @@ export const partsApiSlice = apiSlice.injectEndpoints({
       onQueryStarted({ buildId, likeId }, { dispatch, queryFulfilled }) {
         const deleteBuildLikeResult = dispatch(
           apiSlice.util.updateQueryData("getBuild", buildId, (build) => {
-            const likes = build.likes.filter((like) => like.id !== likeId);
-            Object.assign(build, { likes });
+            build.likes = build.likes.filter((like) => like.id !== likeId);
           })
         );
         queryFulfilled.catch(deleteBuildLikeResult.undo);

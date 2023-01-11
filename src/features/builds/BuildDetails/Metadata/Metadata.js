@@ -56,7 +56,6 @@ const Metadata = ({ build }) => {
 
       const onClick = () => {
         if (hasLiked) {
-          console.log(hasLiked);
           deleteBuildLike({ buildId: build.id, likeId: hasLiked.id });
         } else {
           createBuildLike({
