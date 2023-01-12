@@ -13,6 +13,7 @@ import {
 
 // Components
 import Icon from "components/Icon";
+import Counter from "components/Counter";
 
 // Hooks
 import useAuth from "hooks/useAuth";
@@ -51,30 +52,56 @@ const Metadata = ({ build }) => {
     useDeleteBuildLikeMutation();
 
   const renderLikeButton = () => {
-    if (user) {
-      const hasLiked = build.likes.find((like) => like.userId === user.id);
+    const hasLiked =
+      user && build.likes.find((like) => like.userId === user.id);
 
-      const onClick = () => {
-        if (hasLiked) {
-          deleteBuildLike({ buildId: build.id, likeId: hasLiked.id });
-        } else {
-          createBuildLike({
-            buildId: build.id,
-            likeId: uuidv4(),
-            userId: user.id,
-          });
-        }
-      };
+    const onClick = () => {
+      if (hasLiked) {
+        deleteBuildLike({ buildId: build.id, likeId: hasLiked.id });
+      } else {
+        createBuildLike({
+          buildId: build.id,
+          likeId: uuidv4(),
+          userId: user.id,
+        });
+      }
+    };
 
-      const disabled = isCreateLikeLoading || isDeleteLikeLoading;
+    const disabled = !user || isCreateLikeLoading || isDeleteLikeLoading;
 
-      return (
-        <button disabled={disabled} onClick={onClick}>
-          <Icon icon={hasLiked ? ["fas", "heart"] : ["far", "heart"]} />
-        </button>
-      );
-    }
+    return (
+      <button disabled={disabled} onClick={onClick}>
+        <span>
+          <Counter value={build.likes.length} />
+        </span>
+        <Icon icon={hasLiked ? ["fas", "heart"] : ["far", "heart"]} ml="5px" />
+      </button>
+    );
   };
+
+  const renderCommentButton = () => {
+    const onClick = () => {
+      console.log("scroll to comments");
+    };
+
+    return (
+      <button onClick={onClick}>
+        <span>
+          <Counter value={build.commentCount} />
+        </span>
+        <Icon icon={["far", "comment"]} ml="5px" />
+      </button>
+    );
+  };
+
+  const renderViewCount = () => (
+    <button>
+      <span>
+        <Counter value={build.viewCount} />
+      </span>
+      <Icon icon={["far", "eye"]} ml="5px" />
+    </button>
+  );
 
   return (
     <Styled.Container>
@@ -89,6 +116,8 @@ const Metadata = ({ build }) => {
       <div>
         {renderEditButton()}
         {renderLikeButton()}
+        {renderCommentButton()}
+        {renderViewCount()}
       </div>
     </Styled.Container>
   );
